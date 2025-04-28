@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Empty folders (ensure Git tracks empty folders)
+**/.gitkeep
