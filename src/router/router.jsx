@@ -15,7 +15,7 @@ const router = createBrowserRouter([
     Component: MainLayout,
     children: [
       { index: true, Component: HomePage },
-      { path: "loin", Component: Login },
+      { path: "login", Component: Login },
       { path: "search", Component: SearchPage },
       { path: "food/:id", Component: DetailPage },
       { path: "mypage", Component: MyPage },
