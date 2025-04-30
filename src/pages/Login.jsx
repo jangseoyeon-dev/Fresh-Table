@@ -6,6 +6,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
   const handleLogin = async (e) => {
     e.preventDefault();
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -13,7 +14,7 @@ const Login = () => {
       password,
     });
     if (error) {
-      console.log("로그인 실패:", error.message);
+      setMessage(`로그인 실패: ${error.message}`);
       // 실패한 경우에 대한 처리
     } else {
       console.log("로그인 성공:", data.user);
@@ -27,13 +28,13 @@ const Login = () => {
     <div className=" flex justify-center items-center h-screen font-noto">
       <div className="w-100 max-sm:w-80">
         <form action="" onSubmit={handleLogin} className="flex flex-col">
-          <div className="flex justify-center py-4">
+          <Link to={"/"} className="flex justify-center py-4">
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0w6qiEjDWopTV3tllAh_sKaQbe3dI588aJA&s"
               alt=""
               className="w-14"
             />
-          </div>
+          </Link>
           <div className=" font-bold text-2xl">로그인하기</div>
           <div className="border-t-1 border-[#BDBDBD] my-4"></div>
           <div className="">이메일</div>
@@ -69,6 +70,9 @@ const Login = () => {
             </Link>
           </div>
         </form>
+        {message && (
+          <p className="text-center text-sm text-gray-700">{message}</p>
+        )}
       </div>
     </div>
   );

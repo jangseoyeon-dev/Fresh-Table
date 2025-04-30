@@ -8,6 +8,7 @@ import SearchPage from "@/pages/SearchPage";
 import DetailPage from "@/pages/DetailPage";
 import MyPage from "@/pages/MyPage";
 import Signup from "../pages/Signup";
+import Home from "../pages/Home";
 
 const router = createBrowserRouter([
   { path: "*", Component: NotFoundPage },
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
       { path: "mypage", Component: MyPage },
     ],
   },
+  { path: "home", Component: Home },
   { path: "login", Component: Login },
   { path: "signup", Component: Signup },
 ]);

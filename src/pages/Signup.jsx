@@ -56,31 +56,33 @@ export default function Signup() {
     }
     handleUpload();
   };
-  useEffect(() => {
-    console.log(avatarFile);
-  }, [avatarFile]);
+  // useEffect(() => {
+  //   console.log(avatarFile);
+  // }, [avatarFile]);
 
   return (
     <div className="flex justify-center items-center h-screen font-noto">
       <div className="w-100 max-sm:w-80">
         <form action="" className="flex flex-col" onSubmit={handleSignup}>
-          <div className="flex justify-center py-4">
+          <Link to={"/"} className="flex cursor-pointer justify-center py-4">
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0w6qiEjDWopTV3tllAh_sKaQbe3dI588aJA&s"
               alt=""
               className="w-14"
             />
-          </div>
+          </Link>
           <div className="font-bold text-2xl">회원가입하기</div>
           <div className="border-t-1 border-[#BDBDBD] my-4"></div>
           <div className="">이메일</div>
           <input
+            required
             className="border-1 rounded-sm p-1 mt-2 px-3 placeholder:text-sm focus:outline-gray-400 focus:outline-1"
             type="email"
             onChange={(e) => setEmail(e.target.value)}
           />
           <div className="mt-6 flex justify-between items-end">비밀번호</div>
           <input
+            required
             className="border-1 rounded-sm p-1 mt-2 px-3 placeholder:text-sm focus:outline-gray-400 focus:outline-1"
             type="password"
             onChange={(e) => setPassword(e.target.value)}
@@ -95,7 +97,9 @@ export default function Signup() {
           <div className="mt-2 flex items-center justify-center w-full">
             <div
               id="file-name"
-              className="text-gray-600 flex-grow text-sm mr-2 border-1 focus:outline-gray-400 focus:outline-1 rounded-sm p-2  px-3"
+              className={`${
+                avatarFile ? "py-1.5" : "py-4"
+              } text-gray-600 flex-grow text-sm mr-2  border-1 focus:outline-gray-400 focus:outline-1 rounded-sm px-3`}
             >
               {avatarFile.name}
             </div>
@@ -107,7 +111,7 @@ export default function Signup() {
             />
             <label
               htmlFor="file-upload"
-              className="cursor-pointer text-sm bg-[#66bb6a] font-bold hover:bg-[#72cf77] text-white rounded-sm p-2 px-3"
+              className="cursor-pointer text-sm bg-[#66bb6a] font-bold hover:bg-[#72cf77] text-white rounded-sm py-2 px-3"
             >
               파일 선택
             </label>
@@ -126,7 +130,7 @@ export default function Signup() {
           </div>
         </form>
         {message && (
-          <p className="mt-4 text-center text-sm text-gray-700">{message}</p>
+          <p className="text-center text-sm text-gray-700">{message}</p>
         )}
       </div>
     </div>
