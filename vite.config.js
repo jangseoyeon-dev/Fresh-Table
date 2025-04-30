@@ -5,18 +5,13 @@ import tailwindcss from "@tailwindcss/vite";
 
 import { fileURLToPath } from "url";
 
-import tailwindcss from "@tailwindcss/vite";
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-<<<<<<< HEAD
-=======
 
->>>>>>> dev
   resolve: {
     alias: [{ find: "@", replacement: path.resolve(__dirname, "src") }],
   },
