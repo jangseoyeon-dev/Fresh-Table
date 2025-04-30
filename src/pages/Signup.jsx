@@ -1,8 +1,7 @@
-// src/pages/register.jsx
 import { useState } from "react";
 import { supabase } from "../lib/supabaseClient"; // supabase 클라이언트 임포트
 
-export default function Register() {
+export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
