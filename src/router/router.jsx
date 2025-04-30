@@ -7,6 +7,7 @@ import HomePage from "@/pages/HomePage";
 import SearchPage from "@/pages/SearchPage";
 import DetailPage from "@/pages/DetailPage";
 import MyPage from "@/pages/MyPage";
+import Signup from "../pages/Signup";
 
 const router = createBrowserRouter([
   { path: "*", Component: NotFoundPage },
@@ -15,11 +16,12 @@ const router = createBrowserRouter([
     Component: MainLayout,
     children: [
       { index: true, Component: HomePage },
-      { path: "login", Component: Login },
       { path: "search", Component: SearchPage },
       { path: "food/:id", Component: DetailPage },
       { path: "mypage", Component: MyPage },
     ],
   },
+  { path: "login", Component: Login },
+  { path: "signup", Component: Signup },
 ]);
 export default router;
