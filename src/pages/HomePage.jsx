@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import api from "../utils/api";
+import { useNavigate } from "react-router";
 
 export const responsive = {
   superLargeDesktop: {
@@ -53,7 +55,31 @@ export const todayPick = [
   },
 ];
 
+
+
 const HomePage = ({ deviceType }) => {
+  const [recipes, setRecipes]=useState([])
+  const navigate = useNavigate()
+
+  const handleClick=(id)=>{
+    navigate(`/food/${id}`)
+  }
+
+  useEffect(()=>{
+    const fetchRecipes = async()=>{
+      try{
+        const res = await api.get();
+        const list = res.data.COOKRCP01?.row || [];
+        setRecipes(list);
+        console.log(list)
+        
+      } catch (err) {
+        console.error('레시피 로딩 실패:', err)
+      }
+    }
+    fetchRecipes()
+  }, [])
+
   return (
     <div id="container" className="flex flex-col items-center">
       <div className="w-full max-w-7xl mx-auto px-4 py-10">
@@ -61,50 +87,46 @@ const HomePage = ({ deviceType }) => {
           핵꿀팁 BEST 요리모음
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {todayPick.map((recipe, index) => (
+          {recipes.slice(0,6).map((recipe, index) => (
             <div
               key={index}
+              onClick={()=>handleClick(recipe.RCP_SEQ)}
               className="group relative overflow-hidden cursor-pointer"
             >
               <div className="absolute top-2 left-2 bg-[#66BB6A] text-white w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold shadow-md">
                 {index + 1}
               </div>
               <img
-                src={recipe.img}
-                alt={recipe.title}
+                src={recipe.ATT_FILE_NO_MAIN}
+                alt={recipe.RCP_NM}
                 className="w-full h-52 object-cover"
               />
               <div className="absolute top-2 right-2 text-2xl cursor-pointer">
                 ♡
               </div>
-              <p className="text-sm mt-2 text-gray-500">#해시태그</p>
+              <p className="text-sm mt-2 text-gray-500">  {recipe.HASH_TAG ? `#${recipe.HASH_TAG}` : ''}</p>
               <h3 className="mt-2 text-lg font-semibold text-gray-900 group-hover:underline">
-                {recipe.title}
+                {recipe.RCP_NM}
               </h3>
-              <p className="text-sm text-gray-500">{recipe.kcal} kcal</p>
+              <p className="text-sm text-gray-500">{recipe.INFO_ENG} kcal</p>
             </div>
           ))}
         </div>
       </div>
       <div className="mt-10 relative w-full h-[400px] overflow-hidden cursor-pointer">
         <img
-          src={todayPick[0].img}
-          alt="김치찌개"
+          src={recipes[28]?.ATT_FILE_NO_MK}
+          alt={recipes[28]?.RCP_NM}
+          onClick={()=>handleClick(recipes[28]?.RCP_SEQ)}
           className="w-full h-full object-cover"
         />
 
         <div className="absolute top-1/2 left-8 transform -translate-y-1/2 bg-white p-6 shadow-lg max-w-sm">
-          <p className="text-xs font-semibold text-gray-500 mb-1">한식</p>
+          <p className="text-xs font-semibold text-gray-500 mb-1">{recipes[49]?.RCP_PAT2}</p>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            전통 김치찌개 레시피
-          </h2>
+          {recipes[28]?.RCP_NM}</h2>
           <p className="text-sm text-gray-600 leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a
-            velit vel leo aliquet tincidunt sit amet in nisi. Fusce suscipit
-            rhoncus massa, et malesuada justo. Mauris posuere, ipsum nec
-            sollicitudin malesuada, magna enim venenatis est, id pretium purus
-            justo eget nisi. Fusce hendrerit lacus sit amet lectus pretium
-            feugiat.
+            {recipes[28]?.RCP_NA_TIP}
           </p>
         </div>
       </div>
@@ -131,20 +153,22 @@ const HomePage = ({ deviceType }) => {
           dotListClass="custom-dot-list-style"
           itemClass="carousel-item-padding-40-px"
         >
-          {todayPick.slice(0, 4).map((recipe, index) => (
+          {recipes.slice(7, 15).map((recipe, index) => (
             <div className="px-2">
               <div className="relative overflow-hidden shadow-lg hover:scale-105 transition-transform cursor-pointer">
                 <img
-                  src={recipe.img}
-                  alt={recipe.title}
+                  src={recipe?.ATT_FILE_NO_MK}
+                  alt={recipe?.RCP_NM}
                   className="w-full h-64 object-cover"
                 />
-                <div className="absolute bottom-0 w-full h-full bg-black/50 text-white p-4">
+                <div
+                 className="absolute bottom-0 w-full h-full text-white p-4"
+                 onClick={()=>handleClick(recipe.RCP_SEQ)}>
                   <h3 className="text-lg font-bold">{recipe.title}</h3>
                   <div className="flex items-center text-sm mt-1 space-x-2">
-                    <span>한식</span>
-                    <span>338Kcal</span>
-                    <span>30분</span>
+                    <span className="bg-black/70 px-2 py-1 rounded-full">{recipe?.RCP_NM}</span>
+                    <span className="bg-black/70 px-2 py-1 rounded-full">{recipe?.RCP_PAT2}</span>
+                    {/* <span className="bg-black/70 px-2 py-1 rounded-full">{recipe?.INFO_ENG}Kcal</span> */}
                   </div>
                 </div>
               </div>
@@ -161,25 +185,26 @@ const HomePage = ({ deviceType }) => {
           </a>
         </h2>
         <div className="grid grid-cols-2 gap-6 px-4 max-w-7xl mx-auto">
-          {todayPick.slice(0, 4).map((recipe, index) => (
+          {recipes.filter(recipe=>parseFloat(recipe.INFO_ENG)<=400).slice(30, 34).map((recipe, index) => (
             <div
               key={index}
+              onClick={()=>handleClick(recipe.RCP_SEQ)}
               className="relative overflow-hidden hover:scale-105 transition-transform bg-white cursor-pointer"
             >
               <img
-                src={recipe.img}
-                alt={recipe.title}
+                src={recipe.ATT_FILE_NO_MK}
+                alt={recipe.RCP_NM}
                 className="w-full h-48 object-cover"
               />
               <div className="absolute top-2 right-2 text-2xl cursor-pointer">
                 ♡
               </div>
               <div className="absolute bottom-0 w-full bg-black/50 text-white p-4">
-                <h3 className="text-lg font-bold">{recipe.title}</h3>
+                <h3 className="text-lg font-bold">{recipe.RCP_NM}</h3>
                 <div className="flex items-center text-sm mt-1">
-                  <span>{recipe.category}</span>
-                  <span>{recipe.kcal} kcal</span>
-                  <span>{recipe.time}</span>
+                  {/* <span>{recipe.RCP_WAY2}</span> */}
+                  <span>{recipe.INFO_ENG} kcal</span>
+                  {/* <span>{recipe.time}</span> */}
                 </div>
               </div>
             </div>
