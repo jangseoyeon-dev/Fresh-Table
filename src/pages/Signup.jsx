@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient"; // supabase 클라이언트 임포트
 import { Link } from "react-router";
 
@@ -56,19 +56,22 @@ export default function Signup() {
     }
     handleUpload();
   };
+  useEffect(() => {
+    console.log(avatarFile);
+  }, [avatarFile]);
 
   return (
     <div className="flex justify-center items-center h-screen font-noto">
-      <div className="w-100 ">
+      <div className="w-100 max-sm:w-80">
         <form action="" className="flex flex-col" onSubmit={handleSignup}>
           <div className="flex justify-center py-4">
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0w6qiEjDWopTV3tllAh_sKaQbe3dI588aJA&s"
               alt=""
-              className="w-20"
+              className="w-14"
             />
           </div>
-          <div className="py-4 font-bold text-2xl">회원가입하기</div>
+          <div className="font-bold text-2xl">회원가입하기</div>
           <div className="border-t-1 border-[#BDBDBD] my-4"></div>
           <div className="">이메일</div>
           <input
@@ -88,10 +91,28 @@ export default function Signup() {
             type="text"
             onChange={(e) => setName(e.target.value)}
           />
-          <input
-            type="file"
-            onChange={(e) => setAvatarFile(e.target.files[0])}
-          />
+          <div className="mt-6 flex justify-between items-end">프로필 사진</div>
+          <div className="mt-2 flex items-center justify-center w-full">
+            <div
+              id="file-name"
+              className="text-gray-600 flex-grow text-sm mr-2 border-1 focus:outline-gray-400 focus:outline-1 rounded-sm p-2  px-3"
+            >
+              {avatarFile.name}
+            </div>
+            <input
+              id="file-upload"
+              type="file"
+              className="hidden"
+              onChange={(e) => setAvatarFile(e.target.files[0])}
+            />
+            <label
+              htmlFor="file-upload"
+              className="cursor-pointer text-sm bg-[#66bb6a] font-bold hover:bg-[#72cf77] text-white rounded-sm p-2 px-3"
+            >
+              파일 선택
+            </label>
+          </div>
+
           <button className="hover:bg-[#72cf77] bg-[#66BB6A] rounded-sm mt-6 font-bold text-white cursor-pointer p-2">
             가입하기
           </button>

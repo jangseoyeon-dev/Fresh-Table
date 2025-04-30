@@ -25,13 +25,13 @@ const Login = () => {
   };
   return (
     <div className=" flex justify-center items-center h-screen font-noto">
-      <div className="w-100 mb-40">
+      <div className="w-100 max-sm:w-80">
         <form action="" onSubmit={handleLogin} className="flex flex-col">
           <div className="flex justify-center py-4">
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0w6qiEjDWopTV3tllAh_sKaQbe3dI588aJA&s"
               alt=""
-              className="w-20"
+              className="w-14"
             />
           </div>
           <div className=" font-bold text-2xl">로그인하기</div>
