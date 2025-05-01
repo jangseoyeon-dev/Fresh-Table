@@ -4,8 +4,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 import { responsive } from "./HomePage";
-import { useDetailRecipe } from "../hooks/useDetailRecipe";
-import { todayPick } from "./HomePage";
+import { useDetailRecipe, useRelatedRecipe } from "../hooks/useDetailRecipe";
 import { useParams } from "react-router";
 import { parseIngredients } from "../utils/parseIngredients";
 import { cleanManualStep } from "../utils/cleanManualStep";
@@ -14,6 +13,10 @@ import Loding from "../components/Loding";
 const DetailPage = () => {
   const { foodNm } = useParams();
   const { data, isLoading, isError, error } = useDetailRecipe(foodNm);
+  const { data: related, isLoading: relatedLoading } = useRelatedRecipe(
+    data?.RCP_PAT2
+  );
+
   const foodIngredients = parseIngredients(data?.RCP_PARTS_DTLS);
   const manualSteps = cleanManualStep(data);
 
@@ -21,7 +24,7 @@ const DetailPage = () => {
     window.scrollTo(0, 0);
   }, [foodNm]);
 
-  if (isLoading) {
+  if (isLoading || relatedLoading) {
     return <Loding />;
   }
   if (isError) {
@@ -109,17 +112,15 @@ const DetailPage = () => {
       {/* 관련 레시피 정보 */}
       <div className="w-full max-w-4xl px-4 pb-16">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          관련 레시피 정보
+          {data?.RCP_PAT2} 레시피 정보
         </h2>
         <Carousel
           swipeable={true}
           draggable={true}
           showDots={false}
           responsive={responsive}
-          ssr={true} // means to render carousel on server-side.
+          ssr={true}
           infinite={true}
-          // autoPlay={deviceType !== "mobile"}
-          // autoPlaySpeed={1000}
           keyBoardControl={true}
           customTransition="all 0.5s"
           transitionDuration={1000}
@@ -128,20 +129,22 @@ const DetailPage = () => {
           dotListClass="custom-dot-list-style"
           itemClass="carousel-item-padding-40-px"
         >
-          {todayPick.slice(0, 4).map((recipe) => (
-            <div className="px-2">
+          {(related || []).slice(40, 48).map((recipe, index) => (
+            <div className="px-2" key={index}>
               <div className="relative overflow-hidden shadow-lg hover:scale-105 transition-transform cursor-pointer">
                 <img
-                  src={recipe.img}
-                  alt={recipe.title}
+                  src={recipe?.ATT_FILE_NO_MK}
+                  alt={recipe?.RCP_NM}
                   className="w-full h-64 object-cover"
                 />
-                <div className="absolute bottom-0 w-full h-full bg-black/50 text-white p-4">
-                  <h3 className="text-lg font-bold">{recipe.title}</h3>
+                <div className="absolute bottom-0 w-full h-full text-white p-4">
+                  <h3 className="text-lg font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ">
+                    {recipe.RCP_NM}
+                  </h3>
                   <div className="flex items-center text-sm mt-1 space-x-2">
-                    <span>한식</span>
-                    <span>338Kcal</span>
-                    <span>30분</span>
+                    <span className="bg-black/70 px-2 py-1 rounded-full">
+                      {recipe?.RCP_PAT2}
+                    </span>
                   </div>
                 </div>
               </div>
