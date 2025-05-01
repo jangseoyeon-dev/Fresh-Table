@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import CarouselSlider from "../components/CarouselSlider";
 import useLikedRecipes from "@/stores/useLikedRecipes";
+import { supabase } from "@supabase/auth-ui-shared";
 
 const MyPage = () => {
+  const [avatar, setAvatar] = useState("/default-avatar.png"); // 기본 프사
+  const [userName, setUserName] = useState("");
   const { liked } = useLikedRecipes(); // 전역 liked 상태
   const [viewedRecipes, setViewedRecipes] = useState([]);
 
@@ -13,18 +16,43 @@ const MyPage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const fetchAvatar = async () => {
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
+
+      if (error) {
+        console.error("유저 정보 가져오기 실패:", error.message);
+        return;
+      }
+
+      if (user) {
+        if (user.user_metadata?.avatar_url) {
+          setAvatar(user.user_metadata.avatar_url);
+        }
+        if (user.user_metadata?.full_name || user.user_metadata?.name) {
+          setUserName(user.user_metadata.full_name || user.user_metadata.name);
+        }
+      } // ✅ 여기 중괄호 추가
+    };
+
+    fetchAvatar();
+  }, []);
+
   return (
     <main className="max-w-5xl mx-auto px-4 py-8">
       {/* 프로필 영역 */}
       <section className="flex items-center gap-6 mb-10 bg-[#E8F5E9] p-8">
         <img
-          src="/profile.jpg"
+          src={avatar}
           alt="Profile"
           className="w-24 h-24 rounded-full object-cover border-2 border-[#66BB6A]"
         />
         <div>
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#333333]">
-            안녕하세요, 이유진님 👋
+            안녕하세요, {userName}님👋
           </h2>
           <p className="text-xs sm:text-sm md:text-base text-gray-500">
             마이 레시피 공간에 오신 것을 환영합니다.
