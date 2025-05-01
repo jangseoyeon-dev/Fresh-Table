@@ -5,10 +5,7 @@ export const cleanManualStep = (data) => {
       const key = `MANUAL${i.toString().padStart(2, "0")}`;
       if (data[key] && data[key].trim() !== "") {
         // 숫자와 점, 그 뒤의 데이터 제거하는 정규식
-        const cleanedText = data[key]
-          .trim()
-          .replace(/^\d+\.\s*/, "")
-          .replace(/\..*/, "");
+        const cleanedText = data[key].trim().replace(/^\d+\.\s*/, "");
         manualSteps.push(cleanedText);
       }
     }

@@ -1,6 +1,20 @@
 export const parseIngredients = (text) => {
-  const matches =
-    text &&
-    text.match(/([가-힣]+)(?=\s*\d+g|\s*\d+ml|\s*\d+\(|\s*\d+\s*[\w(])/g);
-  return matches ? matches.map((str) => str.trim()) : [];
+  if (!text) return [];
+
+  const withoutNewlines = text.replace(/\n/g, " ");
+  const parts = withoutNewlines.split(/●|재료 |육수 |양념 /).filter(Boolean);
+  const items = parts.flatMap((part) => {
+    return part
+      .split(",")
+      .map((item) =>
+        item
+          .replace(/\([^)]*\)/g, "") // 괄호 제거
+          .replace(/\d+(g|ml)?/gi, "") // 숫자 제거
+          .replace(/:/g, "") // 콜론 제거
+          .trim()
+      )
+      .filter(Boolean);
+  });
+
+  return items;
 };
