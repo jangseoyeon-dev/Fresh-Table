@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
@@ -22,6 +22,24 @@ export const responsive = {
 };
 
 const MyPage = () => {
+  // localstorage에 저장된 레시피 불러오기
+  const [likedRecipes, setLikedRecipes] = useState([]);
+  const [viewedRecipes, setViewedRecipes] = useState([]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("likedRecipes");
+    if (saved) {
+      setLikedRecipes(JSON.parse(saved));
+    }
+  }, []);
+
+  useEffect(() => {
+    const viewed = localStorage.getItem("viewedRecipes");
+    if (viewed) {
+      setViewedRecipes(JSON.parse(viewed));
+    }
+  }, []);
+
   // 레시피 카드 컴포넌트
   const RecipeCard = ({ title, image }) => (
     <div className="bg-white rounded-xl shadow-md hover:scale-105 transition duration-200 overflow-hidden">
@@ -37,29 +55,19 @@ const MyPage = () => {
       <h3 className="text-xl font-semibold text-[#333333] mb-4">
         {icon} {title}
       </h3>
-      <Carousel responsive={responsive}>
-        {recipes.map((r, i) => (
-          <div key={i} className="p-2">
-            <RecipeCard title={r.title} image={r.image} />
-          </div>
-        ))}
-      </Carousel>
+      {recipes.length === 0 ? (
+        <p className="text-gray-400">아직 좋아요한 레시피가 없습니다.</p>
+      ) : (
+        <Carousel responsive={responsive}>
+          {recipes.map((r, i) => (
+            <div key={i} className="p-2">
+              <RecipeCard title={r.title} image={r.image} alt={r.title} />
+            </div>
+          ))}
+        </Carousel>
+      )}
     </section>
   );
-
-  const likedRecipes = [
-    { title: "딸기 케이크", image: "/img1.jpg" },
-    { title: "파스타", image: "/img2.jpg" },
-    { title: "감자탕", image: "/img3.jpg" },
-    { title: "마라탕", image: "/img4.jpg" },
-  ];
-
-  const viewedRecipes = [
-    { title: "된장찌개", image: "/img1.jpg" },
-    { title: "토스트", image: "/img2.jpg" },
-    { title: "김치찌개", image: "/img3.jpg" },
-    { title: "순두부찌개", image: "/img4.jpg" },
-  ];
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-8">
@@ -83,13 +91,14 @@ const MyPage = () => {
         </button>
       </section>
 
-      {/* 좋아요한 레시피 */}
+      {/* 좋아요한 레시피 (localStorage에서 가져옴) */}
       <CarouselSection
         title="좋아요한 레시피"
         icon="❤️"
         recipes={likedRecipes}
       />
 
+      {/* 최근 본 레시피 (localStorage에서 가져옴) */}
       <CarouselSection
         title="최근 본 레시피"
         icon="👀"
