@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDetailRecipe, useRelatedRecipe } from "../hooks/useDetailRecipe";
 import { useParams } from "react-router";
-import { parseIngredients } from "../utils/parseIngredients";
 import { cleanManualStep } from "../utils/cleanManualStep";
 import Loding from "../components/Loding";
 import useLikedRecipes from "../stores/useLikedRecipes";
@@ -14,8 +13,6 @@ const DetailPage = () => {
   const { data: related, isLoading: relatedLoading } = useRelatedRecipe(
     data?.RCP_PAT2
   );
-
-  const foodIngredients = parseIngredients(data?.RCP_PARTS_DTLS);
   const manualSteps = cleanManualStep(data);
 
   useEffect(() => {
@@ -77,20 +74,20 @@ const DetailPage = () => {
           </div>
 
           {/* 재료 정보 */}
-          <div>
-            <h2 className="text-xl font-semibold text-gray-800 mb-3">
+          <div className="p-6 bg-white rounded-xl shadow-lg border border-gray-200">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b border-gray-300 pb-2">
               재료 정보
             </h2>
-            <ul className="grid grid-cols-3 gap-3">
-              {foodIngredients.map((ingredient, index) => (
-                <li
+            <div className="text-gray-700 leading-relaxed space-y-2">
+              {data?.RCP_PARTS_DTLS?.split("\n").map((item, index) => (
+                <p
                   key={index}
-                  className="bg-gray-100 px-3 py-2 rounded-md text-gray-700 text-sm"
+                  className="px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition"
                 >
-                  {ingredient}
-                </li>
+                  {item.trim().replace("●", " ")}
+                </p>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -113,12 +110,14 @@ const DetailPage = () => {
       </div>
 
       {/* 관련 레시피 정보 */}
-      <div className="w-full max-w-4xl px-4 pb-16">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          {data?.RCP_PAT2} 레시피 정보
-        </h2>
-        <CarouselSlider data={related.slice(1, 11)} />
-      </div>
+      {related && (
+        <div className="w-full max-w-4xl px-4 pb-16">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            {data?.RCP_PAT2} 레시피 정보
+          </h2>
+          <CarouselSlider data={related.slice(1, 11)} />
+        </div>
+      )}
     </div>
   );
 };
