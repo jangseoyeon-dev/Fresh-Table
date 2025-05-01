@@ -50,13 +50,13 @@ const MyPage = () => {
     </div>
   );
 
-  const CarouselSection = ({ title, icon, recipes }) => (
+  const CarouselSection = ({ title, icon, recipes, emptyMessage }) => (
     <section className="mb-12">
       <h3 className="text-xl font-semibold text-[#333333] mb-4">
         {icon} {title}
       </h3>
       {recipes.length === 0 ? (
-        <p className="text-gray-400">아직 좋아요한 레시피가 없습니다.</p>
+        <p className="text-gray-400">{emptyMessage}</p>
       ) : (
         <Carousel responsive={responsive}>
           {recipes.map((r, i) => (
@@ -96,6 +96,7 @@ const MyPage = () => {
         title="좋아요한 레시피"
         icon="❤️"
         recipes={likedRecipes}
+        emptyMessage="좋아요한 레시피가 없습니다."
       />
 
       {/* 최근 본 레시피 (localStorage에서 가져옴) */}
@@ -103,6 +104,7 @@ const MyPage = () => {
         title="최근 본 레시피"
         icon="👀"
         recipes={viewedRecipes}
+        emptyMessage="최근 본 레시피가 없습니다."
       />
     </main>
   );
