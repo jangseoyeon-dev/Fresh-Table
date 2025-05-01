@@ -1,1 +1,5 @@
 @import "tailwindcss";
+@theme {
+  --font-noto: "Noto Sans", "sans-serif";
+  --font-open: "Open Sans", "sans-serif";
+}
