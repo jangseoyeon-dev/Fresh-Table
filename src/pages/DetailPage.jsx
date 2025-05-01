@@ -1,16 +1,14 @@
 import React, { useEffect } from "react";
-
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-
-import { responsive } from "./HomePage";
 import { useDetailRecipe, useRelatedRecipe } from "../hooks/useDetailRecipe";
 import { useParams } from "react-router";
 import { parseIngredients } from "../utils/parseIngredients";
 import { cleanManualStep } from "../utils/cleanManualStep";
 import Loding from "../components/Loding";
+import useLikedRecipes from "../stores/useLikedRecipes";
+import CarouselSlider from "../components/CarouselSlider";
 
 const DetailPage = () => {
+  const { toggleLike } = useLikedRecipes();
   const { foodNm } = useParams();
   const { data, isLoading, isError, error } = useDetailRecipe(foodNm);
   const { data: related, isLoading: relatedLoading } = useRelatedRecipe(
@@ -45,7 +43,12 @@ const DetailPage = () => {
             className="rounded-2xl shadow-lg w-full h-full object-cover"
           />
           {/* 좋아요 아이콘 */}
-          <div className="absolute top-2 right-2 text-2xl cursor-pointer">
+          <div
+            className="absolute top-2 right-2 text-2xl cursor-pointer"
+            onClick={() => {
+              toggleLike(data);
+            }}
+          >
             ♡
           </div>
         </div>
@@ -114,43 +117,7 @@ const DetailPage = () => {
         <h2 className="text-2xl font-bold text-gray-800 mb-6">
           {data?.RCP_PAT2} 레시피 정보
         </h2>
-        <Carousel
-          swipeable={true}
-          draggable={true}
-          showDots={false}
-          responsive={responsive}
-          ssr={true}
-          infinite={true}
-          keyBoardControl={true}
-          customTransition="all 0.5s"
-          transitionDuration={1000}
-          containerClass="carousel-container"
-          removeArrowOnDeviceType={["tablet", "mobile"]}
-          dotListClass="custom-dot-list-style"
-          itemClass="carousel-item-padding-40-px"
-        >
-          {(related || []).slice(40, 48).map((recipe, index) => (
-            <div className="px-2" key={index}>
-              <div className="relative overflow-hidden shadow-lg hover:scale-105 transition-transform cursor-pointer">
-                <img
-                  src={recipe?.ATT_FILE_NO_MK}
-                  alt={recipe?.RCP_NM}
-                  className="w-full h-64 object-cover"
-                />
-                <div className="absolute bottom-0 w-full h-full text-white p-4">
-                  <h3 className="text-lg font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ">
-                    {recipe.RCP_NM}
-                  </h3>
-                  <div className="flex items-center text-sm mt-1 space-x-2">
-                    <span className="bg-black/70 px-2 py-1 rounded-full">
-                      {recipe?.RCP_PAT2}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </Carousel>
+        <CarouselSlider data={related.slice(1, 11)} />
       </div>
     </div>
   );
