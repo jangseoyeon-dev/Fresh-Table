@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import api from "../utils/api";
 import { useNavigate } from "react-router";
 import Loding from "../components/Loding";
 import useAllRecipes from "../hooks/useAllRecipe";
@@ -59,10 +58,9 @@ export const todayPick = [
 ];
 
 const HomePage = ({ deviceType }) => {
-  // const [recipes, setRecipes] = useState([]);
-  const [loading, setLoading] = useState(true)
   const navigate = useNavigate();
   const {data, isLoading, isError, error} = useAllRecipes()
+  const [showTofuModal, setShowTofuModal] = useState(false);
 
   if (isLoading){
     return <Loding/> 
@@ -120,16 +118,16 @@ const HomePage = ({ deviceType }) => {
               <img
                 src={tofuRecipes[0]?.ATT_FILE_NO_MAIN}
                 alt={tofuRecipes[0]?.RCP_NM}
-                onClick={handleTofuClick}
+                onClick={() => setShowTofuModal(true)}
                 className="cursor-pointer w-full h-64 object-cover mb-4"
               />
               <h3
-               onClick={handleTofuClick}
+               onClick={() => setShowTofuModal(true)}
                className="cursor-pointer text-xl font-bold text-gray-900">
                 냉장고에 남아있는<br />처치 곤란 두부, 어떡하죠?
               </h3>
               <p
-               onClick={handleTofuClick}
+               onClick={() => setShowTofuModal(true)}
                className="cursor-pointer text-sm text-gray-500 mt-2 leading-relaxed">
                 살 때마다 남게 되는 두부 때문에 걱정이시라고요?<br/>
                 냉장고 파먹기 좋은 레시피들로 생활비 아껴보아요.
@@ -145,7 +143,109 @@ const HomePage = ({ deviceType }) => {
         </div>
       </div>
 
+      {/* {showTofuModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[80vh] overflow-y-auto p-6 relative">
+            <button
+              className="absolute top-3 right-4 text-gray-500 hover:text-black text-xl"
+              onClick={() => setShowTofuModal(false)}
+            >
+              ×
+            </button>
+            <h2 className="text-2xl font-bold mb-6 text-center">두부 레시피 모음</h2>
 
+            <ul className="space-y-4">
+              {tofuRecipes.map((recipe, idx) => (
+                <li
+                  key={idx}
+                  onClick={() => {
+                    navigate(`/food/${encodeURIComponent(recipe.RCP_NM)}`);
+                    setShowTofuModal(false);
+                  }}
+                  className="flex items-center gap-4 cursor-pointer hover:bg-gray-50 p-2 rounded-md transition"
+                >
+                  <img
+                    src={recipe.ATT_FILE_NO_MAIN}
+                    alt={recipe.RCP_NM}
+                    className="w-24 h-24 object-cover rounded-md flex-shrink-0"
+                  />
+                  <div>
+                    <h3 className="text-md font-semibold text-gray-900">{recipe.RCP_NM}</h3>
+                    <p className="text-sm text-gray-500 mt-1">
+                      {recipe.RCP_NA_TIP
+                        ? recipe.RCP_NA_TIP.slice(0, 50) + '...'
+                        : `${recipe.INFO_ENG} kcal`}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )} */}
+      {showTofuModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[80vh] overflow-y-auto p-6 relative">
+            <button
+              className="cursor-pointer absolute top-3 right-4 text-gray-500 hover:text-black text-2xl"
+              onClick={() => setShowTofuModal(false)}
+            >
+              ×
+            </button>
+            <h2 className="text-3xl font-bold mt-6 mb-6 text-center">간편 두부 레시피 모음 </h2>
+            <p className="text-center mb-10">냉장고 속, 빠질 수 없는 식재료에 두부가 있다면? <br/>
+              맛있게 즐길 수 있는 초간단 레시피 -
+            </p>
+            <hr className="w-full max-w-7xl border-t border-gray-300 my-10" />
+            <ul className="space-y-4">
+              {tofuRecipes.map((recipe, idx) => (
+                <li
+                  key={idx}
+                  onClick={() => {
+                    navigate(`/food/${encodeURIComponent(recipe.RCP_NM)}`);
+                    setShowTofuModal(false);
+                  }}
+                  className="flex items-center gap-4 cursor-pointer hover:bg-gray-50 p-2 rounded-md transition"
+                >
+                  <img
+                    src={recipe.ATT_FILE_NO_MAIN}
+                    alt={recipe.RCP_NM}
+                    className="w-24 h-24 object-cover rounded-md flex-shrink-0"
+                  />
+
+                  <div className="flex-1">
+                    <h3 className="text-md font-semibold text-gray-900 mb-1">
+                      {recipe.RCP_NM}
+                    </h3>
+                    
+                    <div className="text-sm text-gray-500 flex flex-wrap gap-2 items-center">
+                      <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
+                        {recipe.INFO_ENG} kcal
+                      </span>
+                      {recipe.RCP_WAY2 && (
+                        <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs">
+                          {recipe.RCP_WAY2}
+                        </span>
+                      )}
+                      {recipe.HASH_TAG &&
+                        recipe.HASH_TAG.split(',').map((tag, i) => (
+                          <span
+                            key={i}
+                            className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs"
+                          >
+                            #{tag.trim()}
+                          </span>
+                        ))}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+
+          
       <hr className="w-full max-w-7xl border-t border-gray-300 my-10" />
 
       {/* 핵꿀팁 BEST 요리 모음 */}
@@ -220,8 +320,6 @@ const HomePage = ({ deviceType }) => {
           responsive={responsive}
           ssr={true} // means to render carousel on server-side.
           infinite={true}
-          // autoPlay={deviceType !== "mobile"}
-          // autoPlaySpeed={1000}
           keyBoardControl={true}
           customTransition="all 0.5s"
           transitionDuration={1000}
@@ -245,13 +343,9 @@ const HomePage = ({ deviceType }) => {
                 >
                   <h3 className="text-lg font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ">{recipe.RCP_NM}</h3>
                   <div className="flex items-center text-sm mt-1 space-x-2">
-                    {/* <span className="bg-black/70 px-2 py-1 rounded-full">
-                      {recipe?.RCP_NM}
-                    </span> */}
                     <span className="bg-black/70 px-2 py-1 rounded-full">
                       {recipe?.RCP_PAT2}
                     </span>
-                    {/* <span className="bg-black/70 px-2 py-1 rounded-full">{recipe?.INFO_ENG}Kcal</span> */}
                   </div>
                 </div>
               </div>
