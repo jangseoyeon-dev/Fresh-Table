@@ -1,28 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-
-export const responsive = {
-  superLargeDesktop: {
-    breakpoint: { max: 4000, min: 3000 },
-    items: 5,
-  },
-  desktop: {
-    breakpoint: { max: 3000, min: 1024 },
-    items: 3,
-  },
-  tablet: {
-    breakpoint: { max: 1024, min: 464 },
-    items: 2,
-  },
-  mobile: {
-    breakpoint: { max: 464, min: 0 },
-    items: 1,
-  },
-};
+import CarouselSlider from "../components/CarouselSlider"; // 공용 슬라이더
 
 const MyPage = () => {
-  // localstorage에 저장된 레시피 불러오기
   const [likedRecipes, setLikedRecipes] = useState([]);
   const [viewedRecipes, setViewedRecipes] = useState([]);
 
@@ -40,41 +19,12 @@ const MyPage = () => {
     }
   }, []);
 
-  // 레시피 카드 컴포넌트
-  const RecipeCard = ({ title, image }) => (
-    <div className="bg-white rounded-xl shadow-md hover:scale-105 transition duration-200 overflow-hidden">
-      <img src={image} alt={title} className="w-full h-40 object-cover" />
-      <div className="p-3">
-        <h4 className="text-md font-semibold">{title}</h4>
-      </div>
-    </div>
-  );
-
-  const CarouselSection = ({ title, icon, recipes, emptyMessage }) => (
-    <section className="mb-12">
-      <h3 className="text-xl font-semibold text-[#333333] mb-4">
-        {icon} {title}
-      </h3>
-      {recipes.length === 0 ? (
-        <p className="text-gray-400">{emptyMessage}</p>
-      ) : (
-        <Carousel responsive={responsive}>
-          {recipes.map((r, i) => (
-            <div key={i} className="p-2">
-              <RecipeCard title={r.title} image={r.image} alt={r.title} />
-            </div>
-          ))}
-        </Carousel>
-      )}
-    </section>
-  );
-
   return (
     <main className="max-w-5xl mx-auto px-4 py-8">
       {/* 프로필 영역 */}
       <section className="flex items-center gap-6 mb-10 bg-[#E8F5E9] p-8">
         <img
-          src="/profile.jpg" // 예시 이미지
+          src="/profile.jpg"
           alt="Profile"
           className="w-24 h-24 rounded-full object-cover border-2 border-[#66BB6A]"
         />
@@ -91,21 +41,29 @@ const MyPage = () => {
         </button>
       </section>
 
-      {/* 좋아요한 레시피 (localStorage에서 가져옴) */}
-      <CarouselSection
-        title="좋아요한 레시피"
-        icon="❤️"
-        recipes={likedRecipes}
-        emptyMessage="좋아요한 레시피가 없습니다."
-      />
+      {/* 좋아요한 레시피 */}
+      <section className="mb-12">
+        <h3 className="text-xl font-semibold text-[#333333] mb-4">
+          ❤️ 좋아요한 레시피
+        </h3>
+        {likedRecipes.length > 0 ? (
+          <CarouselSlider data={likedRecipes} />
+        ) : (
+          <p className="text-gray-400">좋아요한 레시피가 없습니다.</p>
+        )}
+      </section>
 
-      {/* 최근 본 레시피 (localStorage에서 가져옴) */}
-      <CarouselSection
-        title="최근 본 레시피"
-        icon="👀"
-        recipes={viewedRecipes}
-        emptyMessage="최근 본 레시피가 없습니다."
-      />
+      {/* 최근 본 레시피 */}
+      <section className="mb-12">
+        <h3 className="text-xl font-semibold text-[#333333] mb-4">
+          👀 최근 본 레시피
+        </h3>
+        {viewedRecipes.length > 0 ? (
+          <CarouselSlider data={viewedRecipes} />
+        ) : (
+          <p className="text-gray-400">최근 본 레시피가 없습니다.</p>
+        )}
+      </section>
     </main>
   );
 };
