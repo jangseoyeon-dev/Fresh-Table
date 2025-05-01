@@ -59,8 +59,10 @@ export const todayPick = [
 ];
 
 const HomePage = ({ deviceType }) => {
+
   // const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true)
+
   const navigate = useNavigate();
   const {data, isLoading, isError, error} = useAllRecipes()
 
@@ -74,6 +76,7 @@ const HomePage = ({ deviceType }) => {
   const handleClick = (id) => {
     navigate(`/food/${id}`);
   };
+
   
   const tofuRecipes = data.filter(recipe =>
     ['순두부', '연두부', '두부'].some(tag =>
@@ -85,6 +88,7 @@ const HomePage = ({ deviceType }) => {
     navigate('/search?calorie=below400')
   }
 
+
   const handleTofuClick=()=>{
     navigate('/search?q=두부')
   }
@@ -92,7 +96,6 @@ const HomePage = ({ deviceType }) => {
 
   return (
     <div id="container" className="flex flex-col items-center">
-      
       {/* 요리초보 */}
       <div
        className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-10 items-center"
@@ -100,10 +103,13 @@ const HomePage = ({ deviceType }) => {
        >
         <div>
           <p className="text-green-600 font-semibold text-md mb-2">
-            요리 초보라면? <br/>이것부터 보세요!
+            요리 초보라면? <br />
+            이것부터 보세요!
           </p>
           <h2 className="text-4xl font-extrabold text-gray-900 mb-6 leading-tight">
+
             요리초보<br />두부 요리 레시피
+
           </h2>
           <button
            className="cursor-pointer bg-green-600 text-white px-6 py-3 rounded-full font-medium hover:bg-green-700 transition flex items-center gap-2"
@@ -111,11 +117,10 @@ const HomePage = ({ deviceType }) => {
            >
             레시피 더보기 <span className="text-xl">＋</span>
           </button>
-
-          
         </div>
 
         <div className="flex">
+
             <div className="min-w-[280px]">
               <img
                 src={tofuRecipes[0]?.ATT_FILE_NO_MAIN}
@@ -141,10 +146,11 @@ const HomePage = ({ deviceType }) => {
                   </span>
                 ))}
               </div>
+
             </div>
+          </div>
         </div>
       </div>
-
 
       <hr className="w-full max-w-7xl border-t border-gray-300 my-10" />
 
@@ -186,9 +192,11 @@ const HomePage = ({ deviceType }) => {
 
       {/* 배너 */}
       <div
+
        className="mt-10 relative w-full h-[400px] overflow-hidden cursor-pointer"
        onClick={() => handleClick(data[35]?.RCP_NM)}
        >
+
         <img
           src={data[35]?.ATT_FILE_NO_MK}
           alt={data[35]?.RCP_NM}
@@ -243,7 +251,9 @@ const HomePage = ({ deviceType }) => {
                   className="absolute bottom-0 w-full h-full text-white p-4"
                   onClick={() => handleClick(recipe.RCP_NM)}
                 >
-                  <h3 className="text-lg font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ">{recipe.RCP_NM}</h3>
+                  <h3 className="text-lg font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ">
+                    {recipe.RCP_NM}
+                  </h3>
                   <div className="flex items-center text-sm mt-1 space-x-2">
                     {/* <span className="bg-black/70 px-2 py-1 rounded-full">
                       {recipe?.RCP_NM}
