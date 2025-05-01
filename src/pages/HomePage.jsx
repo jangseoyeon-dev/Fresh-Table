@@ -87,7 +87,7 @@ const HomePage = ({ deviceType }) => {
           {recipes.slice(0, 6).map((recipe, index) => (
             <div
               key={index}
-              onClick={() => handleClick(recipe.RCP_SEQ)}
+              onClick={() => handleClick(recipe.RCP_NM)}
               className="group relative overflow-hidden cursor-pointer"
             >
               <div className="absolute top-2 left-2 bg-[#66BB6A] text-white w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold shadow-md">
@@ -117,7 +117,7 @@ const HomePage = ({ deviceType }) => {
         <img
           src={recipes[28]?.ATT_FILE_NO_MK}
           alt={recipes[28]?.RCP_NM}
-          onClick={() => handleClick(recipes[28]?.RCP_SEQ)}
+          onClick={() => handleClick(recipes[28]?.RCP_NM)}
           className="w-full h-full object-cover"
         />
 
@@ -166,7 +166,7 @@ const HomePage = ({ deviceType }) => {
                 />
                 <div
                   className="absolute bottom-0 w-full h-full text-white p-4"
-                  onClick={() => handleClick(recipe.RCP_SEQ)}
+                  onClick={() => handleClick(recipe.RCP_NM)}
                 >
                   <h3 className="text-lg font-bold">{recipe.title}</h3>
                   <div className="flex items-center text-sm mt-1 space-x-2">
@@ -199,7 +199,7 @@ const HomePage = ({ deviceType }) => {
             .map((recipe, index) => (
               <div
                 key={index}
-                onClick={() => handleClick(recipe.RCP_SEQ)}
+                onClick={() => handleClick(recipe.RCP_NM)}
                 className="relative overflow-hidden hover:scale-105 transition-transform bg-white cursor-pointer"
               >
                 <img
