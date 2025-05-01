@@ -98,9 +98,7 @@ const HomePage = ({ deviceType }) => {
     <div id="container" className="flex flex-col items-center">
       {/* 요리초보 */}
       <div
-       className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-10 items-center"
-       
-       >
+       className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         <div>
           <p className="text-green-600 font-semibold text-md mb-2">
             요리 초보라면? <br />
@@ -120,7 +118,6 @@ const HomePage = ({ deviceType }) => {
         </div>
 
         <div className="flex">
-
             <div className="min-w-[280px]">
               <img
                 src={tofuRecipes[0]?.ATT_FILE_NO_MAIN}
@@ -148,11 +145,9 @@ const HomePage = ({ deviceType }) => {
               </div>
 
             </div>
-          </div>
         </div>
       </div>
 
-      <hr className="w-full max-w-7xl border-t border-gray-300 my-10" />
 
       {/* 핵꿀팁 BEST 요리 모음 */}
       <div className="w-full max-w-7xl mx-auto px-4 py-10">
