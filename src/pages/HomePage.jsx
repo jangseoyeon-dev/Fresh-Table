@@ -4,6 +4,7 @@ import "react-multi-carousel/lib/styles.css";
 import api from "../utils/api";
 import { useNavigate } from "react-router";
 import Loding from "../components/Loding";
+import useAllRecipes from "../hooks/useAllRecipe";
 
 export const responsive = {
   superLargeDesktop: {
@@ -57,62 +58,57 @@ export const todayPick = [
   },
 ];
 
-
-
-
 const HomePage = ({ deviceType }) => {
-  const [recipes, setRecipes] = useState([]);
+  // const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate();
+  const {data, isLoading, isError, error} = useAllRecipes()
+
+  if (isLoading){
+    return <Loding/> 
+  }
+  if (isError){
+    return <div>{error.message}</div>
+  }
 
   const handleClick = (id) => {
     navigate(`/food/${id}`);
   };
   
-  const tofuRecipes = recipes.filter(recipe =>
+  const tofuRecipes = data.filter(recipe =>
     ['순두부', '연두부', '두부'].some(tag =>
       recipe.HASH_TAG?.includes(tag)
     )
   );
   
-  const handleClickTofu=()=>{
-    navigate('/search?tag=두부')
+  const handleLowCalClick=()=>{
+    navigate('/search?calorie=below400')
   }
 
-  console.log("두부", tofuRecipes);
+  const handleTofuClick=()=>{
+    navigate('/search?q=두부')
+  }
 
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      try {
-        setLoading(true)
-        const res = await api.get();
-        const list = res.data.COOKRCP01?.row || [];
-        setRecipes(list);
-        console.log(list);
-      } catch (err) {
-        console.error("레시피 로딩 실패:", err);
-      } finally {
-        setLoading(false)
-      }
-    };
-    fetchRecipes();
-  }, []);
-  
-  if (loading) return <Loding />;
 
   return (
     <div id="container" className="flex flex-col items-center">
       
       {/* 요리초보 */}
-      <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+      <div
+       className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-10 items-center"
+       
+       >
         <div>
           <p className="text-green-600 font-semibold text-md mb-2">
             요리 초보라면? <br/>이것부터 보세요!
           </p>
           <h2 className="text-4xl font-extrabold text-gray-900 mb-6 leading-tight">
-            요리초보<br />레시피
+            요리초보<br />두부 요리 레시피
           </h2>
-          <button className="bg-green-600 text-white px-6 py-3 rounded-full font-medium hover:bg-green-700 transition flex items-center gap-2">
+          <button
+           className="cursor-pointer bg-green-600 text-white px-6 py-3 rounded-full font-medium hover:bg-green-700 transition flex items-center gap-2"
+           onClick={handleTofuClick}
+           >
             레시피 더보기 <span className="text-xl">＋</span>
           </button>
 
@@ -124,12 +120,17 @@ const HomePage = ({ deviceType }) => {
               <img
                 src={tofuRecipes[0]?.ATT_FILE_NO_MAIN}
                 alt={tofuRecipes[0]?.RCP_NM}
-                className="w-full h-64 object-cover mb-4"
+                onClick={handleTofuClick}
+                className="cursor-pointer w-full h-64 object-cover mb-4"
               />
-              <h3 className="text-xl font-bold text-gray-900">
+              <h3
+               onClick={handleTofuClick}
+               className="cursor-pointer text-xl font-bold text-gray-900">
                 냉장고에 남아있는<br />처치 곤란 두부, 어떡하죠?
               </h3>
-              <p className="text-sm text-gray-500 mt-2 leading-relaxed">
+              <p
+               onClick={handleTofuClick}
+               className="cursor-pointer text-sm text-gray-500 mt-2 leading-relaxed">
                 살 때마다 남게 되는 두부 때문에 걱정이시라고요?<br/>
                 냉장고 파먹기 좋은 레시피들로 생활비 아껴보아요.
               </p>
@@ -153,7 +154,7 @@ const HomePage = ({ deviceType }) => {
           핵꿀팁 BEST 요리모음
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {recipes.slice(10, 19).map((recipe, index) => (
+          {data.slice(10, 19).map((recipe, index) => (
             <div
               key={index}
               onClick={() => handleClick(recipe.RCP_NM)}
@@ -186,23 +187,23 @@ const HomePage = ({ deviceType }) => {
       {/* 배너 */}
       <div
        className="mt-10 relative w-full h-[400px] overflow-hidden cursor-pointer"
-       onClick={() => handleClick(recipes[35]?.RCP_NM)}
+       onClick={() => handleClick(data[35]?.RCP_NM)}
        >
         <img
-          src={recipes[35]?.ATT_FILE_NO_MK}
-          alt={recipes[35]?.RCP_NM}
+          src={data[35]?.ATT_FILE_NO_MK}
+          alt={data[35]?.RCP_NM}
           className="w-full h-full object-cover"
         />
 
         <div className="absolute top-1/2 left-8 transform -translate-y-1/2 bg-white p-6 shadow-lg max-w-sm">
           <p className="text-xs font-semibold text-gray-500 mb-1">
-            {recipes[35]?.RCP_PAT2}
+            {data[35]?.RCP_PAT2}
           </p>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            {recipes[35]?.RCP_NM}
+            {data[35]?.RCP_NM}
           </h2>
           <p className="text-sm text-gray-600 leading-relaxed">
-            {recipes[35]?.RCP_NA_TIP}
+            {data[35]?.RCP_NA_TIP}
           </p>
         </div>
       </div>
@@ -230,7 +231,7 @@ const HomePage = ({ deviceType }) => {
           dotListClass="custom-dot-list-style"
           itemClass="carousel-item-padding-40-px"
         >
-          {recipes.slice(40, 48).map((recipe, index) => (
+          {data.slice(40, 48).map((recipe, index) => (
             <div className="px-2">
               <div className="relative overflow-hidden shadow-lg hover:scale-105 transition-transform cursor-pointer">
                 <img
@@ -261,14 +262,17 @@ const HomePage = ({ deviceType }) => {
 
       {/* 다이어트 중? 저칼로리 레시피 */}
       <div className=" w-full px-4 py-10 mt-20 bg-[#F1F8E9]">
-        <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center hover:underline cursor-pointer">
+        <h2
+         className="text-3xl font-bold mb-6 text-gray-800 text-center hover:underline cursor-pointer"
+         onClick={handleLowCalClick}
+         >
           다이어트 중? 저칼로리 레시피!
           <a href="#" className="text-3xl text-[#66BB6A]">
             →
           </a>
         </h2>
         <div className="grid grid-cols-2 gap-6 px-4 max-w-7xl mx-auto">
-          {recipes
+          {data
             .filter((recipe) => parseFloat(recipe.INFO_ENG) <= 200)
             .slice(20, 24)
             .map((recipe, index) => (
