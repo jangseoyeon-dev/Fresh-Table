@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
-import CarouselSlider from "../components/CarouselSlider"; // 공용 슬라이더
+import CarouselSlider from "../components/CarouselSlider";
+import useLikedRecipes from "@/stores/useLikedRecipes";
 
 const MyPage = () => {
-  const [likedRecipes, setLikedRecipes] = useState([]);
+  const { liked } = useLikedRecipes(); // 전역 liked 상태
   const [viewedRecipes, setViewedRecipes] = useState([]);
-
-  useEffect(() => {
-    const saved = localStorage.getItem("likedRecipes");
-    if (saved) {
-      setLikedRecipes(JSON.parse(saved));
-    }
-  }, []);
 
   useEffect(() => {
     const viewed = localStorage.getItem("viewedRecipes");
@@ -41,25 +35,37 @@ const MyPage = () => {
         </button>
       </section>
 
-      {/* 좋아요한 레시피 */}
+      {/* ❤️ 좋아요한 레시피 */}
       <section className="mb-12">
         <h3 className="text-xl font-semibold text-[#333333] mb-4">
           ❤️ 좋아요한 레시피
         </h3>
-        {likedRecipes.length > 0 ? (
-          <CarouselSlider data={likedRecipes} />
+        {liked.length > 0 ? (
+          <CarouselSlider
+            data={liked.map((r) => ({
+              RCP_NM: r.title,
+              ATT_FILE_NO_MK: r.image,
+              RCP_PAT2: r.category || "", // 없으면 빈 문자열
+            }))}
+          />
         ) : (
           <p className="text-gray-400">좋아요한 레시피가 없습니다.</p>
         )}
       </section>
 
-      {/* 최근 본 레시피 */}
+      {/* 👀 최근 본 레시피 */}
       <section className="mb-12">
         <h3 className="text-xl font-semibold text-[#333333] mb-4">
           👀 최근 본 레시피
         </h3>
         {viewedRecipes.length > 0 ? (
-          <CarouselSlider data={viewedRecipes} />
+          <CarouselSlider
+            data={viewedRecipes.map((r) => ({
+              RCP_NM: r.title,
+              ATT_FILE_NO_MK: r.image,
+              RCP_PAT2: "", // 최근 본 레시피는 category 없을 수 있음
+            }))}
+          />
         ) : (
           <p className="text-gray-400">최근 본 레시피가 없습니다.</p>
         )}
