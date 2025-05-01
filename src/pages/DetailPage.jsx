@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -16,6 +16,10 @@ const DetailPage = () => {
   const { data, isLoading, isError, error } = useDetailRecipe(foodNm);
   const foodIngredients = parseIngredients(data?.RCP_PARTS_DTLS);
   const manualSteps = cleanManualStep(data);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [foodNm]);
 
   if (isLoading) {
     return <Loding />;
