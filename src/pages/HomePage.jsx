@@ -57,34 +57,29 @@ export const todayPick = [
   },
 ];
 
-
-
-
 const HomePage = ({ deviceType }) => {
   const [recipes, setRecipes] = useState([]);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const handleClick = (id) => {
     navigate(`/food/${id}`);
   };
-  
-  const tofuRecipes = recipes.filter(recipe =>
-    ['순두부', '연두부', '두부'].some(tag =>
-      recipe.HASH_TAG?.includes(tag)
-    )
+
+  const tofuRecipes = recipes.filter((recipe) =>
+    ["순두부", "연두부", "두부"].some((tag) => recipe.HASH_TAG?.includes(tag))
   );
-  
-  const handleClickTofu=()=>{
-    navigate('/search?tag=두부')
-  }
+
+  const handleClickTofu = () => {
+    navigate("/search?tag=두부");
+  };
 
   console.log("두부", tofuRecipes);
 
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        setLoading(true)
+        setLoading(true);
         const res = await api.get();
         const list = res.data.COOKRCP01?.row || [];
         setRecipes(list);
@@ -92,58 +87,63 @@ const HomePage = ({ deviceType }) => {
       } catch (err) {
         console.error("레시피 로딩 실패:", err);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     };
     fetchRecipes();
   }, []);
-  
+
   if (loading) return <Loding />;
 
   return (
     <div id="container" className="flex flex-col items-center">
-      
       {/* 요리초보 */}
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         <div>
           <p className="text-green-600 font-semibold text-md mb-2">
-            요리 초보라면? <br/>이것부터 보세요!
+            요리 초보라면? <br />
+            이것부터 보세요!
           </p>
           <h2 className="text-4xl font-extrabold text-gray-900 mb-6 leading-tight">
-            요리초보<br />레시피
+            요리초보
+            <br />
+            레시피
           </h2>
           <button className="bg-green-600 text-white px-6 py-3 rounded-full font-medium hover:bg-green-700 transition flex items-center gap-2">
             레시피 더보기 <span className="text-xl">＋</span>
           </button>
-
-          
         </div>
 
         <div className="flex">
-            <div className="min-w-[280px]">
-              <img
-                src={tofuRecipes[0]?.ATT_FILE_NO_MAIN}
-                alt={tofuRecipes[0]?.RCP_NM}
-                className="w-full h-64 object-cover mb-4"
-              />
-              <h3 className="text-xl font-bold text-gray-900">
-                냉장고에 남아있는<br />처치 곤란 두부, 어떡하죠?
-              </h3>
-              <p className="text-sm text-gray-500 mt-2 leading-relaxed">
-                살 때마다 남게 되는 두부 때문에 걱정이시라고요?<br/>
-                냉장고 파먹기 좋은 레시피들로 생활비 아껴보아요.
-              </p>
-              <div className="flex flex-wrap gap-2 mt-4">
-                {['두부', '순두부', '연두부'].map((tag, idx) => (
-                  <span key={idx} className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full">
-                    #{tag}
-                  </span>
-                ))}
-              </div>
+          <div className="min-w-[280px]">
+            <img
+              src={tofuRecipes[0]?.ATT_FILE_NO_MAIN}
+              alt={tofuRecipes[0]?.RCP_NM}
+              className="w-full h-64 object-cover mb-4"
+            />
+            <h3 className="text-xl font-bold text-gray-900">
+              냉장고에 남아있는
+              <br />
+              처치 곤란 두부, 어떡하죠?
+            </h3>
+            <p className="text-sm text-gray-500 mt-2 leading-relaxed">
+              살 때마다 남게 되는 두부 때문에 걱정이시라고요?
+              <br />
+              냉장고 파먹기 좋은 레시피들로 생활비 아껴보아요.
+            </p>
+            <div className="flex flex-wrap gap-2 mt-4">
+              {["두부", "순두부", "연두부"].map((tag, idx) => (
+                <span
+                  key={idx}
+                  className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full"
+                >
+                  #{tag}
+                </span>
+              ))}
             </div>
+          </div>
         </div>
       </div>
-
 
       <hr className="w-full max-w-7xl border-t border-gray-300 my-10" />
 
@@ -185,9 +185,9 @@ const HomePage = ({ deviceType }) => {
 
       {/* 배너 */}
       <div
-       className="mt-10 relative w-full h-[400px] overflow-hidden cursor-pointer"
-       onClick={() => handleClick(recipes[35]?.RCP_NM)}
-       >
+        className="mt-10 relative w-full h-[400px] overflow-hidden cursor-pointer"
+        onClick={() => handleClick(recipes[35]?.RCP_NM)}
+      >
         <img
           src={recipes[35]?.ATT_FILE_NO_MK}
           alt={recipes[35]?.RCP_NM}
@@ -242,7 +242,9 @@ const HomePage = ({ deviceType }) => {
                   className="absolute bottom-0 w-full h-full text-white p-4"
                   onClick={() => handleClick(recipe.RCP_NM)}
                 >
-                  <h3 className="text-lg font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ">{recipe.RCP_NM}</h3>
+                  <h3 className="text-lg font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ">
+                    {recipe.RCP_NM}
+                  </h3>
                   <div className="flex items-center text-sm mt-1 space-x-2">
                     {/* <span className="bg-black/70 px-2 py-1 rounded-full">
                       {recipe?.RCP_NM}
