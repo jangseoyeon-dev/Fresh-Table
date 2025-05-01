@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from "react-router";
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from "react-router";
 import { useFilteredRecipes } from "../hooks/useFilteredRecipes";
 import { ClipLoader } from "react-spinners";
 
@@ -19,6 +19,14 @@ const Search = () => {
   const [selectedCookingMethod, setSelectedCookingMethod] = useState(null);
   const [selectedFoodType, setSelectedFoodType] = useState(null);
   const [calorieFilter, setCalorieFilter] = useState(null);
+  const [searchParams] = useSearchParams()
+
+  useEffect(()=>{
+    const calorie = searchParams.get("calorie")
+    const q = searchParams.get("q");
+    if (q) setQuery(q);
+    if (calorie) setCalorieFilter(calorie);
+  }, [searchParams])
 
   const { data, isLoading, isError, error } = useFilteredRecipes({
     query,

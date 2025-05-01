@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 const api = axios.create({
-  baseURL: `https://openapi.foodsafetykorea.go.kr/api/${API_KEY}/COOKRCP01/json/1/50`,
+  baseURL: `https://openapi.foodsafetykorea.go.kr/api/${API_KEY}/COOKRCP01/json/1/500`,
 });
 
 // 요청 인터셉터 추가하기

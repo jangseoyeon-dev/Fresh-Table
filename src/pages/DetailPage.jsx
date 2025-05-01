@@ -1,19 +1,20 @@
 import React, { useEffect } from "react";
-
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-
-import { responsive } from "./HomePage";
-import { useDetailRecipe } from "../hooks/useDetailRecipe";
-import { todayPick } from "./HomePage";
+import { useDetailRecipe, useRelatedRecipe } from "../hooks/useDetailRecipe";
 import { useParams } from "react-router";
 import { parseIngredients } from "../utils/parseIngredients";
 import { cleanManualStep } from "../utils/cleanManualStep";
 import Loding from "../components/Loding";
+import useLikedRecipes from "../stores/useLikedRecipes";
+import CarouselSlider from "../components/CarouselSlider";
 
 const DetailPage = () => {
+  const { toggleLike } = useLikedRecipes();
   const { foodNm } = useParams();
   const { data, isLoading, isError, error } = useDetailRecipe(foodNm);
+  const { data: related, isLoading: relatedLoading } = useRelatedRecipe(
+    data?.RCP_PAT2
+  );
+
   const foodIngredients = parseIngredients(data?.RCP_PARTS_DTLS);
   const manualSteps = cleanManualStep(data);
 
@@ -21,7 +22,7 @@ const DetailPage = () => {
     window.scrollTo(0, 0);
   }, [foodNm]);
 
-  if (isLoading) {
+  if (isLoading || relatedLoading) {
     return <Loding />;
   }
   if (isError) {
@@ -42,7 +43,12 @@ const DetailPage = () => {
             className="rounded-2xl shadow-lg w-full h-full object-cover"
           />
           {/* 좋아요 아이콘 */}
-          <div className="absolute top-2 right-2 text-2xl cursor-pointer">
+          <div
+            className="absolute top-2 right-2 text-2xl cursor-pointer"
+            onClick={() => {
+              toggleLike(data);
+            }}
+          >
             ♡
           </div>
         </div>
@@ -109,45 +115,9 @@ const DetailPage = () => {
       {/* 관련 레시피 정보 */}
       <div className="w-full max-w-4xl px-4 pb-16">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          관련 레시피 정보
+          {data?.RCP_PAT2} 레시피 정보
         </h2>
-        <Carousel
-          swipeable={true}
-          draggable={true}
-          showDots={false}
-          responsive={responsive}
-          ssr={true} // means to render carousel on server-side.
-          infinite={true}
-          // autoPlay={deviceType !== "mobile"}
-          // autoPlaySpeed={1000}
-          keyBoardControl={true}
-          customTransition="all 0.5s"
-          transitionDuration={1000}
-          containerClass="carousel-container"
-          removeArrowOnDeviceType={["tablet", "mobile"]}
-          dotListClass="custom-dot-list-style"
-          itemClass="carousel-item-padding-40-px"
-        >
-          {todayPick.slice(0, 4).map((recipe) => (
-            <div className="px-2">
-              <div className="relative overflow-hidden shadow-lg hover:scale-105 transition-transform cursor-pointer">
-                <img
-                  src={recipe.img}
-                  alt={recipe.title}
-                  className="w-full h-64 object-cover"
-                />
-                <div className="absolute bottom-0 w-full h-full bg-black/50 text-white p-4">
-                  <h3 className="text-lg font-bold">{recipe.title}</h3>
-                  <div className="flex items-center text-sm mt-1 space-x-2">
-                    <span>한식</span>
-                    <span>338Kcal</span>
-                    <span>30분</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </Carousel>
+        <CarouselSlider data={related.slice(1, 11)} />
       </div>
     </div>
   );
