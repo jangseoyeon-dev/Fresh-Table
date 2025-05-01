@@ -71,10 +71,10 @@ const MyPage = () => {
           className="w-24 h-24 rounded-full object-cover border-2 border-[#66BB6A]"
         />
         <div>
-          <h2 className="text-2xl font-bold text-[#333333]">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#333333]">
             안녕하세요, 이유진님 👋
           </h2>
-          <p className="text-sm text-gray-500">
+          <p className="text-xs sm:text-sm md:text-base text-gray-500">
             마이 레시피 공간에 오신 것을 환영합니다.
           </p>
         </div>
