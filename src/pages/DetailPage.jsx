@@ -1,27 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 import { responsive } from "./HomePage";
+import { useDetailRecipe } from "../hooks/useDetailRecipe";
 import { todayPick } from "./HomePage";
-
-const foodIngredients = [
-  "밥 1공기",
-  "돼지고기",
-  "시금치",
-  "콩나물",
-  "양파",
-  "당근",
-  "계란",
-  "고추장",
-  "간장",
-  "설탕",
-  "깨소금",
-  "참기름",
-];
+import { useParams } from "react-router";
+import { parseIngredients } from "../utils/parseIngredients";
+import { cleanManualStep } from "../utils/cleanManualStep";
+import Loding from "../components/Loding";
 
 const DetailPage = () => {
+  const { foodNm } = useParams();
+  const { data, isLoading, isError, error } = useDetailRecipe(foodNm);
+  const foodIngredients = parseIngredients(data?.RCP_PARTS_DTLS);
+  const manualSteps = cleanManualStep(data);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [foodNm]);
+
+  if (isLoading) {
+    return <Loding />;
+  }
+  if (isError) {
+    return <div>{error.message}</div>;
+  }
+
   return (
     <div
       id="container"
@@ -31,8 +37,8 @@ const DetailPage = () => {
         {/* 이미지 박스 */}
         <div id="imgBox" className="relative w-full mx-auto">
           <img
-            src="https://i.namu.wiki/i/dgjXU86ae29hDSCza-L0GZlFt3T9lRx1Ug9cKtqWSzMzs7Cd0CN2SzyLFEJcHVFviKcxAlIwxcllT9s2sck0RA.jpg"
-            alt="비빔밥"
+            src={data?.ATT_FILE_NO_MAIN}
+            alt={data?.RCP_NM}
             className="rounded-2xl shadow-lg w-full h-full object-cover"
           />
           {/* 좋아요 아이콘 */}
@@ -46,20 +52,21 @@ const DetailPage = () => {
           id="infoBox"
           className="flex flex-col justify-center space-y-6 p-6"
         >
-          <h1 className="text-4xl font-bold text-gray-800">비빔밥</h1>
-          <p className="text-lg text-gray-600">
-            영양가득 맛있는 비빔밥을 만들어보아요!
-          </p>
+          <h1 className="text-4xl font-bold text-gray-800">{data?.RCP_NM}</h1>
+          <p className="text-lg text-gray-600">{data?.RCP_NA_TIP}</p>
 
           <div className="flex items-center gap-6">
             <div className="text-sm text-gray-700">
               <span className="font-semibold">인분:</span> 1인분
             </div>
             <div className="text-sm text-gray-700">
-              <span className="font-semibold">칼로리:</span> 400kcal
+              <span className="font-semibold">칼로리:</span> {data?.INFO_ENG}
+              kcal
             </div>
             <div className="text-sm text-gray-700">
-              <span className="font-semibold">소요 시간:</span> 30분
+              <span className="font-semibold">
+                {data?.HASH_TAG && `#${data?.HASH_TAG}`}
+              </span>
             </div>
           </div>
 
@@ -86,15 +93,7 @@ const DetailPage = () => {
       <div className="w-full max-w-4xl px-4 pb-16">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">레시피 정보</h2>
         <ul className="space-y-4">
-          {[
-            "돼지고기 100g, 애호박 1/5개, 양파 1/2개, 당근 1/3개를 준비합니다.",
-            "고추장 2T, 간장 2T, 설탕 1.5T, 깨소금 1t, 참기름 1t, 식초 1T를 섞어 양념장을 만듭니다.",
-            "양파, 당근, 애호박을 채썰어 준비합니다.",
-            "당근과 애호박은 소금 1꼬집 넣고 볶아줍니다. 양파는 간장 1T 넣고 중불에 캐러멜라이징되도록 볶아줍니다.",
-            "소금, 후추로 밑간한 채썬 돼지고기를 볶아줍니다.",
-            "반숙 계란 프라이를 준비합니다.",
-            "따뜻한 밥 위에 볶은 채소와 고기를 올리고, 반숙 계란과 양념장을 1T 올려 마무리합니다.",
-          ].map((step, index) => (
+          {manualSteps.map((step, index) => (
             <li key={index} className="flex items-center gap-4">
               <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#66BB6A] text-white font-bold flex items-center justify-center">
                 {index + 1}
