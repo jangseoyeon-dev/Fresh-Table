@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    {
+      "source": "/live/:path*",
+      "destination": "https://fo4.dn.nexoncdn.co.kr/live/:path*"
+    }
+  ],
+  "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }]
+}
