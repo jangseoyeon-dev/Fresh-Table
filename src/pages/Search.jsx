@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { useFilteredRecipes } from "../hooks/useFilteredRecipes";
 import { ClipLoader } from "react-spinners";
+import ReactPaginate from 'react-paginate';
 
 const filters = {
   cookingMethods: ["굽기", "끓이기", "볶기", "찌기"],
@@ -12,6 +13,7 @@ const filters = {
     { label: "400kcal 이하", value: "below400" },
   ],
 };
+
 const Search = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
@@ -20,6 +22,8 @@ const Search = () => {
   const [selectedFoodType, setSelectedFoodType] = useState(null);
   const [calorieFilter, setCalorieFilter] = useState(null);
   const [searchParams] = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 12; 
 
   useEffect(() => {
     const calorie = searchParams.get("calorie");
@@ -38,7 +42,24 @@ const Search = () => {
 
   const handleSearch = () => {
     setQuery(search);
+    setCurrentPage(0);
   };
+
+  const handleResetFilters = () => {
+    setQuery("");
+    setSelectedCookingMethod(null);
+    setSelectedFoodType(null);
+    setCalorieFilter(null);
+    setSearch("");
+    setCurrentPage(0);
+  };
+  
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  const offset = currentPage * itemsPerPage;
+  const currentItems = data?.slice(offset, offset + itemsPerPage);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
@@ -53,6 +74,11 @@ const Search = () => {
             className="border border-gray-300 rounded-lg p-2 w-full sm:w-64"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch();
+              }
+            }}
           />
           <button
             onClick={handleSearch}
@@ -60,6 +86,12 @@ const Search = () => {
           >
             검색
           </button>
+          <button 
+            onClick={handleResetFilters}
+            className="bg-[#66BB6A] text-white px-4 py-2 rounded-lg hover:bg-[#57A05A] sm:w-auto"
+          >
+            새로 고침
+            </button>
         </div>
       </div>
 
@@ -136,6 +168,9 @@ const Search = () => {
 
       <hr className="w-full max-w-7xl border-t border-gray-300 my-10" />
       {/* 결과 */}
+      <div className="w-full flex justify-end">
+        <span className="text-right">총 <span className="font-bold text-[#66BB6A]">{data?.length}</span>개</span>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
         {isLoading && (
           <div className="h-screen fixed top-0 left-0 right-0 bottom-0 bg-white/80 z-50 flex justify-center items-center">
@@ -147,13 +182,14 @@ const Search = () => {
             />
           </div>
         )}
-        {!isLoading && data?.length === 0 && (
+        {!isLoading && currentItems?.length === 0 && (
           <p className="font-semibold">
             검색 내용에 해당하는 레시피가 없습니다.
           </p>
         )}
+        
         {!isLoading &&
-          data?.map((recipe, idx) => (
+          currentItems?.map((recipe, idx) => (
             <div
               key={idx}
               className="group p-4 border-2 border-gray-300 rounded-lg hover:border-[#66BB6A] cursor-pointer"
@@ -168,12 +204,28 @@ const Search = () => {
                 {recipe.RCP_NM}
               </h3>
               <p className="text-sm mt-2 text-gray-500">
-                조리 방법: {recipe.RCP_WAY2} / 분류: {recipe.RCP_PAT2} / 칼로리
-                : {recipe.INFO_ENG} kcal
+                조리 방법: {recipe.RCP_WAY2} / 분류: {recipe.RCP_PAT2} / 칼로리: {recipe.INFO_ENG} kcal
               </p>
             </div>
           ))}
       </div>
+      {/* 페이지네이션 */}
+      {data?.length > itemsPerPage && (
+        <ReactPaginate
+          previousLabel={"<"}
+          nextLabel={">"}
+          breakLabel={"..."}
+          pageCount={Math.ceil(data.length / itemsPerPage)}
+          onPageChange={handlePageClick}
+          containerClassName={"flex justify-center mt-8 space-x-2"}
+          pageClassName={"px-3 py-1 border border-gray-300 rounded-md text-sm"}
+          activeClassName={"bg-[#66BB6A] text-white"}
+          previousClassName={"px-3 py-1 border border-gray-300 rounded-md text-sm"}
+          nextClassName={"px-3 py-1 border border-gray-300 rounded-md text-sm"}
+          marginPagesDisplayed={1}
+					pageRangeDisplayed={3}
+        />
+      )}
     </div>
   );
 };
