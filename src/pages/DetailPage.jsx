@@ -10,7 +10,6 @@ import Review from "../components/Review";
 import LikeButton from "../components/LikeButton";
 import useViewedRecipes from "../stores/useViewedRecipes";
 
-
 const DetailPage = () => {
   const { foodNm } = useParams();
   const { data, isLoading, isError, error } = useDetailRecipe(foodNm);
@@ -21,10 +20,7 @@ const DetailPage = () => {
   console.log(data);
   const itemId = data?.RCP_SEQ;
 
-  const manualSteps = cleanManualStep(data);
-
   const addViewed = useViewedRecipes((state) => state.addViewed);
-
 
   useEffect(() => {
     window.scrollTo(0, 0);
