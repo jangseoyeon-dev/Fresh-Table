@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import CarouselSlider from "../components/CarouselSlider";
 import useLikedRecipes from "@/stores/useLikedRecipes";
+import useViewedRecipes from "@/stores/useViewedRecipes";
 import { supabase } from "@supabase/auth-ui-shared";
 
 const MyPage = () => {
   const [avatar, setAvatar] = useState("/default-avatar.png"); // 기본 프사
   const [userName, setUserName] = useState("");
   const { liked } = useLikedRecipes(); // 전역 liked 상태
-  const [viewedRecipes, setViewedRecipes] = useState([]);
+  const { viewed } = useViewedRecipes();
+  // const [viewedRecipes, setViewedRecipes] = useState([]);
 
-  useEffect(() => {
-    const viewed = localStorage.getItem("viewedRecipes");
-    if (viewed) {
-      setViewedRecipes(JSON.parse(viewed));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const viewed = localStorage.getItem("viewedRecipes");
+  //   if (viewed) {
+  //     setViewedRecipes(JSON.parse(viewed));
+  //   }
+  // }, []);
 
   useEffect(() => {
     const fetchAvatar = async () => {
@@ -86,9 +88,9 @@ const MyPage = () => {
         <h3 className="text-xl font-semibold text-[#333333] mb-4">
           👀 최근 본 레시피
         </h3>
-        {viewedRecipes.length > 0 ? (
+        {viewed.length > 0 ? (
           <CarouselSlider
-            data={viewedRecipes.map((r) => ({
+            data={viewed.map((r) => ({
               RCP_NM: r.title,
               ATT_FILE_NO_MK: r.image,
               RCP_PAT2: "", // 최근 본 레시피는 category 없을 수 있음
