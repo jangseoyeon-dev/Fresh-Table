@@ -85,6 +85,7 @@ export default function Signup() {
         console.error("프로필 저장 실패:", profileError.message);
       } else {
         console.log("프로필 저장 성공:", profileData);
+        setMessage("회원가입 성공! 이메일을 확인하세요.");
       }
     }
   };
@@ -162,7 +163,7 @@ export default function Signup() {
             <button className="hover:bg-[#72cf77] bg-[#66BB6A] rounded-sm mt-6 font-bold text-white cursor-pointer p-2">
               가입하기
             </button>
-            <div className="text-sm text-center font-bold py-6">
+            <div className="text-sm text-center font-bold pt-4 pb-2">
               <span className="text-gray-500">회원이신가요?</span>{" "}
               <Link to={"/login"}>
                 <span className="underline cursor-pointer hover:text-gray-500 transition-all">

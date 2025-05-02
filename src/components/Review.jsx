@@ -15,7 +15,7 @@ const Review = ({ itemId }) => {
   const fetchReviewCount = async (itemId) => {
     const { count, error } = await supabase
       .from("reviews")
-      .select("*", { count: "exact", head: true }) // 데이터는 안 받고 개수만
+      .select("*", { count: "exact", head: true })
       .eq("item_id", itemId);
 
     if (error) {
@@ -24,6 +24,22 @@ const Review = ({ itemId }) => {
       setReviewCount(count);
     }
   };
+
+  const fetchReviews = async () => {
+    const { data, error } = await supabase
+      .from("reviews")
+      .select("*") // profiles 조인 제거
+      .eq("item_id", itemId)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("리뷰 가져오기 실패:", error.message);
+    } else {
+      console.log("리뷰 리스트 확인:", data); // <-- 이거 확인!
+      setReviews(data);
+    }
+  };
+
   const submitReview = async (
     e,
     userId,
@@ -33,11 +49,15 @@ const Review = ({ itemId }) => {
     content
   ) => {
     e.preventDefault();
-    console.log(userId, itemId, content);
+
+    if (!userId) {
+      alert("로그인 후 작성 가능합니다.");
+      return;
+    }
 
     const { data, error } = await supabase.from("reviews").insert([
       {
-        content: content,
+        content,
         user_id: userId,
         item_id: itemId,
         avatar_url: avatarUrl,
@@ -50,34 +70,16 @@ const Review = ({ itemId }) => {
     } else {
       console.log("리뷰 저장 성공:", data);
       setContent("");
+      fetchReviews();
+      fetchReviewCount(itemId);
     }
   };
 
   useEffect(() => {
-    async function fetchReviews() {
-      const { data, error } = await supabase
-        .from("reviews")
-        .select(
-          `*,    profiles (
-      avatar_url,
-      nickname
-    )`
-        )
-        .eq("item_id", itemId)
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error("리뷰 가져오기 실패:", error.message);
-      } else {
-        setReviews(data);
-      }
-    }
     fetchReviews();
-  }, [content]);
-
-  useEffect(() => {
     fetchReviewCount(itemId);
-  }, [itemId, content]);
+  }, [itemId]);
+
   return (
     <div className="w-full max-w-4xl px-4 pb-16">
       <div className="font-bold py-2 text-lg">
@@ -85,7 +87,6 @@ const Review = ({ itemId }) => {
         <span className="ml-1">{reviewCount}</span>
       </div>
       <form
-        action=""
         onSubmit={(e) =>
           submitReview(e, userId, itemId, avatarUrl, nickname, content)
         }
@@ -101,23 +102,26 @@ const Review = ({ itemId }) => {
           <button className="hidden">등록</button>
         </div>
       </form>
+
       {reviews.map((review, index, array) => (
-        <div>
-          <div key={review.id} className="flex py-2">
+        <div key={review.id}>
+          <div className="flex py-2">
             <div className="w-10 h-10 mr-3">
               <img
                 className="w-full h-full object-cover rounded-full"
-                src={review.profiles.avatar_url}
+                src={review.avatar_url || "/default-avatar.png"}
                 alt=""
               />
             </div>
             <div>
-              <div className="text-sm font-bold">{review.nickname}</div>
+              <div className="text-sm font-bold">
+                {review.nickname || "익명"}
+              </div>
               <div className="text-base">{review.content}</div>
             </div>
           </div>
           {array.length - 1 !== index && (
-            <div className="w-full border-t-1 border-gray-300"></div>
+            <div className="w-full border-t border-gray-300"></div>
           )}
         </div>
       ))}
