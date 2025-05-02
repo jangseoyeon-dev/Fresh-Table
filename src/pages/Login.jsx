@@ -2,12 +2,15 @@ import { Link, useNavigate } from "react-router";
 import { supabase } from "../lib/supabaseClient"; // supabase 클라이언트 임포트
 import React, { useEffect, useState } from "react";
 import AuthHeader from "../components/common/AuthHeader";
+import useUserStore from "../stores/useUserStore";
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const { user, setUser } = useUserStore();
+  console.log(user);
 
   useEffect(() => {
     const checkSession = async () => {
@@ -30,6 +33,10 @@ const Login = () => {
       email,
       password,
     });
+    const user = data.user;
+    if (user) {
+      setUser(user);
+    }
     if (error) {
       setMessage(`로그인 실패: ${error.message}`);
       // 실패한 경우에 대한 처리

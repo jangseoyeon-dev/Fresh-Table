@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import { supabase } from "../../lib/supabaseClient";
+import useUserStore from "../../stores/useUserStore";
 
 const Header = () => {
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
+  const { user, setUser, clearUser } = useUserStore();
   useEffect(() => {
     const handleIsUser = async () => {
       const {
@@ -29,7 +31,7 @@ const Header = () => {
     if (error) {
       console.log("로그아웃 실패", error.message);
     } else {
-      setUser(null);
+      clearUser();
       console.log("로그아웃 성공!");
     }
   };

@@ -5,6 +5,7 @@ import { cleanManualStep } from "../utils/cleanManualStep";
 import Loding from "../components/Loding";
 import useLikedRecipes from "../stores/useLikedRecipes";
 import CarouselSlider from "../components/CarouselSlider";
+import Review from "../components/Review";
 
 const DetailPage = () => {
   const { toggleLike } = useLikedRecipes();
@@ -13,6 +14,9 @@ const DetailPage = () => {
   const { data: related, isLoading: relatedLoading } = useRelatedRecipe(
     data?.RCP_PAT2
   );
+  console.log(data);
+  const itemId = data?.RCP_SEQ;
+
   const manualSteps = cleanManualStep(data);
 
   useEffect(() => {
@@ -118,6 +122,8 @@ const DetailPage = () => {
           <CarouselSlider data={related.slice(1, 11)} />
         </div>
       )}
+
+      <Review itemId={itemId} />
     </div>
   );
 };
