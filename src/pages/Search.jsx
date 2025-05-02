@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { useFilteredRecipes } from "../hooks/useFilteredRecipes";
 import { ClipLoader } from "react-spinners";
-import useSearchStore from "../stores/useSearchStore";
 
 const filters = {
   cookingMethods: ["굽기", "끓이기", "볶기", "찌기"],
