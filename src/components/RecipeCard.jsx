@@ -13,7 +13,7 @@ const RecipeCard = ({ title, image, category, onClick }) => {
         onClick={onClick}
         className="absolute bottom-0 w-full h-full text-white p-4 bg-gradient-to-t from-black/60 to-transparent"
       >
-        <h3 className="text-lg font-bold w-[80%]">{title}</h3>
+        <h3 className="text-lg font-bold w-[80%]  drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ">{title}</h3>
         {category && (
           <span className="bg-black/70 px-2 py-1 rounded-full text-sm">
             {category}
