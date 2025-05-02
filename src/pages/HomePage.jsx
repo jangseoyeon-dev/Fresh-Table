@@ -136,7 +136,7 @@ const HomePage = () => {
       </div>
 
       {/* 배너 */}
-      <div className="mt-10 w-screen">
+      <div className="mt-10 w-full">
         <Banner data={data} onClick={handleClick} />
       </div>
 
