@@ -5,6 +5,7 @@ import useUserStore from "../../stores/useUserStore";
 
 const Header = () => {
   // const [user, setUser] = useState(null);
+
   const { user, setUser, clearUser } = useUserStore();
   useEffect(() => {
     const handleIsUser = async () => {
@@ -35,6 +36,7 @@ const Header = () => {
       console.log("로그아웃 성공!");
     }
   };
+
   return (
     <div className="flex justify-between items-center p-5 bg-white shadow-md">
       <div>
@@ -46,7 +48,7 @@ const Header = () => {
         </NavLink>
       </div>
       <div className="flex space-x-6 text-gray-600">
-        {user ? (
+        {/* {user ? (
           <NavLink
             to="/"
             onClick={handleLogout}
@@ -61,7 +63,7 @@ const Header = () => {
           >
             로그인
           </NavLink>
-        )}
+        )} */}
 
         <NavLink
           to="/signup"
