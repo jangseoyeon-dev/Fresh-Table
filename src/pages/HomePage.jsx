@@ -1,64 +1,14 @@
-import React, { useEffect, useState } from "react";
-import Carousel from "react-multi-carousel";
+import React, { useState } from "react";
 import "react-multi-carousel/lib/styles.css";
-import api from "../utils/api";
 import { useNavigate } from "react-router";
 import Loding from "../components/Loding";
 import useAllRecipes from "../hooks/useAllRecipe";
+import CarouselSlider from "../components/CarouselSlider";
+import LikeButton from "../components/LikeButton";
+import Banner from "../components/Banner";
+import TofuModal from "../components/TofuModal";
 
-export const responsive = {
-  superLargeDesktop: {
-    breakpoint: { max: 4000, min: 3000 },
-    items: 5,
-  },
-  desktop: {
-    breakpoint: { max: 3000, min: 1024 },
-    items: 3,
-  },
-  tablet: {
-    breakpoint: { max: 1024, min: 464 },
-    items: 2,
-  },
-  mobile: {
-    breakpoint: { max: 464, min: 0 },
-    items: 1,
-  },
-};
-
-export const todayPick = [
-  {
-    title: "김치찌개",
-    img: "https://i.namu.wiki/i/8drgvI-cQLUfJDC00zbl2ZolK4W3o4ZkVSpR-zM5FZk_QzT58vYnx_7ohk0qwGYYiSLPiZgwccyIEFUtYKDjUQ.webp",
-    kcal: "300",
-  },
-  {
-    title: "비빔밥",
-    img: "https://i.namu.wiki/i/dgjXU86ae29hDSCza-L0GZlFt3T9lRx1Ug9cKtqWSzMzs7Cd0CN2SzyLFEJcHVFviKcxAlIwxcllT9s2sck0RA.jpg",
-    kcal: "300",
-  },
-  {
-    title: "갈비찜",
-    img: "https://i.namu.wiki/i/9xHkxjyIHj2yj9fFf7eeyK8YJE3Lu3gJpFEDpe8cNwuMl2hOm61RE7S6607J1KwdvvcejL2J2b2kdS6y_UL0JQ.webp",
-    kcal: "300",
-  },
-  {
-    title: "갈비찜",
-    img: "https://i.namu.wiki/i/9xHkxjyIHj2yj9fFf7eeyK8YJE3Lu3gJpFEDpe8cNwuMl2hOm61RE7S6607J1KwdvvcejL2J2b2kdS6y_UL0JQ.webp",
-    kcal: "300",
-  },
-  {
-    title: "갈비찜",
-    img: "https://i.namu.wiki/i/9xHkxjyIHj2yj9fFf7eeyK8YJE3Lu3gJpFEDpe8cNwuMl2hOm61RE7S6607J1KwdvvcejL2J2b2kdS6y_UL0JQ.webp",
-    kcal: "300",
-  },
-  {
-    title: "갈비찜",
-    img: "https://i.namu.wiki/i/9xHkxjyIHj2yj9fFf7eeyK8YJE3Lu3gJpFEDpe8cNwuMl2hOm61RE7S6607J1KwdvvcejL2J2b2kdS6y_UL0JQ.webp",
-    kcal: "300",
-  },
-];
-
-const HomePage = ({ deviceType }) => {
+const HomePage = () => {
   const [showTofuModal, setShowTofuModal] = useState(false);
   const navigate = useNavigate();
   const { data, isLoading, isError, error } = useAllRecipes();
@@ -169,7 +119,8 @@ const HomePage = ({ deviceType }) => {
                 className="w-full h-52 object-cover"
               />
               <div className="absolute top-2 right-2 text-2xl cursor-pointer">
-                ♡
+                <LikeButton title={recipe.RCP_NM} image={recipe.ATT_FILE_NO_MAIN} />
+
               </div>
               <p className="text-sm mt-2 text-gray-500">
                 {" "}
@@ -185,81 +136,17 @@ const HomePage = ({ deviceType }) => {
       </div>
 
       {/* 배너 */}
-      <div
-        className="mt-10 relative w-full h-[400px] overflow-hidden cursor-pointer"
-        onClick={() => handleClick(data[35]?.RCP_NM)}
-      >
-        <img
-          src={data[35]?.ATT_FILE_NO_MK}
-          alt={data[35]?.RCP_NM}
-          className="w-full h-full object-cover"
-        />
-
-        <div className="absolute top-1/2 left-8 transform -translate-y-1/2 bg-white p-6 shadow-lg max-w-sm">
-          <p className="text-xs font-semibold text-gray-500 mb-1">
-            {data[35]?.RCP_PAT2}
-          </p>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            {data[35]?.RCP_NM}
-          </h2>
-          <p className="text-sm text-gray-600 leading-relaxed">
-            {data[35]?.RCP_NA_TIP}
-          </p>
-        </div>
+      <div className="mt-10 w-screen">
+        <Banner data={data} onClick={handleClick} />
       </div>
+
 
       {/* 오늘 찌개는 이 레시피 어때요? */}
       <div className="w-full max-w-5xl mt-20  mb-6 ">
         <h2 className="text-3xl font-bold mb-6 text-center">
           오늘 찌개는 이 레시피 어때요?
         </h2>
-        <Carousel
-          swipeable={true}
-          draggable={true}
-          showDots={false}
-          responsive={responsive}
-          ssr={true} // means to render carousel on server-side.
-          infinite={true}
-          // autoPlay={deviceType !== "mobile"}
-          // autoPlaySpeed={1000}
-          keyBoardControl={true}
-          customTransition="all 0.5s"
-          transitionDuration={1000}
-          containerClass="carousel-container"
-          removeArrowOnDeviceType={["tablet", "mobile"]}
-          deviceType={deviceType}
-          dotListClass="custom-dot-list-style"
-          itemClass="carousel-item-padding-40-px"
-        >
-          {data.slice(40, 48).map((recipe, index) => (
-            <div className="px-2">
-              <div className="relative overflow-hidden shadow-lg hover:scale-105 transition-transform cursor-pointer">
-                <img
-                  src={recipe?.ATT_FILE_NO_MK}
-                  alt={recipe?.RCP_NM}
-                  className="w-full h-64 object-cover"
-                />
-                <div
-                  className="absolute bottom-0 w-full h-full text-white p-4"
-                  onClick={() => handleClick(recipe.RCP_NM)}
-                >
-                  <h3 className="text-lg font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] ">
-                    {recipe.RCP_NM}
-                  </h3>
-                  <div className="flex items-center text-sm mt-1 space-x-2">
-                    {/* <span className="bg-black/70 px-2 py-1 rounded-full">
-                      {recipe?.RCP_NM}
-                    </span> */}
-                    <span className="bg-black/70 px-2 py-1 rounded-full">
-                      {recipe?.RCP_PAT2}
-                    </span>
-                    {/* <span className="bg-black/70 px-2 py-1 rounded-full">{recipe?.INFO_ENG}Kcal</span> */}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </Carousel>
+        <CarouselSlider data={data.slice(40,48)}/>
       </div>
 
       {/* 다이어트 중? 저칼로리 레시피 */}
@@ -289,7 +176,7 @@ const HomePage = ({ deviceType }) => {
                   className="w-full h-48 object-cover"
                 />
                 <div className="absolute top-2 right-2 text-2xl cursor-pointer">
-                  ♡
+                  <LikeButton title={recipe.RCP_NM} image={recipe.ATT_FILE_NO_MAIN} />
                 </div>
                 <div className="absolute bottom-0 w-full bg-black/50 text-white p-4">
                   <h3 className="text-lg font-bold">{recipe.RCP_NM}</h3>
@@ -304,68 +191,16 @@ const HomePage = ({ deviceType }) => {
         </div>
       </div>
 
+      {/* 두부 모달 */}
       {showTofuModal && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center px-4">
-          <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[80vh] overflow-y-auto p-6 relative">
-            <button
-              className="cursor-pointer absolute top-3 right-4 text-gray-500 hover:text-black text-3xl"
-              onClick={() => setShowTofuModal(false)}
-            >
-              ×
-            </button>
-            <h2 className="text-3xl font-bold mb-6 text-center">
-              간편 두부 레시피 모음
-            </h2>
-            <p className="text-center text-md">
-              냉장고 속, 빠질 수 없는 식재료에 두부가 있다면? <br />
-              맛있게 즐길 수 있는 초간단 레시피 - <br />
-            </p>
-            <hr className="w-full max-w-7xl border-t border-gray-300 my-10" />
-            <ul className="space-y-4">
-              {tofuRecipes.map((recipe, idx) => (
-                <li
-                  key={idx}
-                  onClick={() => {
-                    navigate(`/food/${encodeURIComponent(recipe.RCP_NM)}`);
-                    setShowTofuModal(false);
-                  }}
-                  className="flex items-center gap-4 cursor-pointer hover:bg-gray-50 p-2 rounded-md transition"
-                >
-                  <img
-                    src={recipe.ATT_FILE_NO_MAIN}
-                    alt={recipe.RCP_NM}
-                    className="w-24 h-24 object-cover rounded-md flex-shrink-0"
-                  />
-                  <div className="flex-1">
-                    <h3 className="text-md font-semibold text-gray-900 mb-1">
-                      {recipe.RCP_NM}
-                    </h3>
-                    <div className="text-sm text-gray-500 flex flex-wrap gap-2 items-center">
-                      <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
-                        {recipe.INFO_ENG} kcal
-                      </span>
-                      {recipe.RCP_WAY2 && (
-                        <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs">
-                          {recipe.RCP_WAY2}
-                        </span>
-                      )}
-                      {recipe.HASH_TAG?.split(",")
-                        .slice(0, 2)
-                        .map((tag, i) => (
-                          <span
-                            key={i}
-                            className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs"
-                          >
-                            #{tag.trim()}
-                          </span>
-                        ))}
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        <TofuModal
+          recipes={tofuRecipes}
+          onClose={() => setShowTofuModal(false)}
+          onSelectRecipe={(name) => {
+            navigate(`/food/${encodeURIComponent(name)}`);
+            setShowTofuModal(false);
+          }}
+        />
       )}
     </div>
   );
