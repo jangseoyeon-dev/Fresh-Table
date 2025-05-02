@@ -4,8 +4,12 @@ import { useDetailRecipe, useRelatedRecipe } from "../hooks/useDetailRecipe";
 import { cleanManualStep } from "../utils/cleanManualStep";
 import Loding from "../components/Loding";
 import CarouselSlider from "../components/CarouselSlider";
+
+import Review from "../components/Review";
+
 import LikeButton from "../components/LikeButton";
 import useViewedRecipes from "../stores/useViewedRecipes";
+
 
 const DetailPage = () => {
   const { foodNm } = useParams();
@@ -13,7 +17,14 @@ const DetailPage = () => {
   const { data: related, isLoading: relatedLoading } = useRelatedRecipe(
     data?.RCP_PAT2
   );
+
+  console.log(data);
+  const itemId = data?.RCP_SEQ;
+
+  const manualSteps = cleanManualStep(data);
+
   const addViewed = useViewedRecipes((state) => state.addViewed);
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -120,6 +131,8 @@ const DetailPage = () => {
           <CarouselSlider data={related.slice(1, 11)} />
         </div>
       )}
+
+      <Review itemId={itemId} />
     </div>
   );
 };

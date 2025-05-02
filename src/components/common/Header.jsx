@@ -1,38 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import { supabase } from "../../lib/supabaseClient";
+import useUserStore from "../../stores/useUserStore";
 
 const Header = () => {
   // const [user, setUser] = useState(null);
-  // useEffect(() => {
-  //   const handleIsUser = async () => {
-  //     const {
-  //       data: { user },
-  //     } = await supabase.auth.getUser();
-  //     if (user) {
-  //       // console.log("현재 로그인된 사용자", user);
-  //       setUser(user);
-  //     } else {
-  //       // console.log("로그인되지 않았습니다.");
-  //     }
-  //   };
-  //   handleIsUser();
-  //   supabase.auth.onAuthStateChange((event, session) => {
-  //     console.log("Auth state changed:", event);
-  //     setUser(session?.user ?? null);
-  //   });
-  // }, []);
 
-  // const handleLogout = async (e) => {
-  //   e.preventDefault();
-  //   const { error } = await supabase.auth.signOut();
-  //   if (error) {
-  //     console.log("로그아웃 실패", error.message);
-  //   } else {
-  //     setUser(null);
-  //     console.log("로그아웃 성공!");
-  //   }
-  // };
+  const { user, setUser, clearUser } = useUserStore();
+  useEffect(() => {
+    const handleIsUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        // console.log("현재 로그인된 사용자", user);
+        setUser(user);
+      } else {
+        // console.log("로그인되지 않았습니다.");
+      }
+    };
+    handleIsUser();
+    supabase.auth.onAuthStateChange((event, session) => {
+      console.log("Auth state changed:", event);
+      setUser(session?.user ?? null);
+    });
+  }, []);
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.log("로그아웃 실패", error.message);
+    } else {
+      clearUser();
+      console.log("로그아웃 성공!");
+    }
+  };
+
   return (
     <div className="flex justify-between items-center p-5 bg-white shadow-md">
       <div>

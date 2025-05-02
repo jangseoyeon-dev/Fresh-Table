@@ -61,87 +61,88 @@ export const todayPick = [
 const HomePage = ({ deviceType }) => {
   const [showTofuModal, setShowTofuModal] = useState(false);
   const navigate = useNavigate();
-  const {data, isLoading, isError, error} = useAllRecipes()
+  const { data, isLoading, isError, error } = useAllRecipes();
 
-  if (isLoading){
-    return <Loding/> 
+  if (isLoading) {
+    return <Loding />;
   }
-  if (isError){
-    return <div>{error.message}</div>
+  if (isError) {
+    return <div>{error.message}</div>;
   }
 
   const handleClick = (id) => {
     navigate(`/food/${id}`);
   };
 
-  
-  const tofuRecipes = data.filter(recipe =>
-    ['순두부', '연두부', '두부'].some(tag =>
-      recipe.HASH_TAG?.includes(tag)
-    )
+  const tofuRecipes = data.filter((recipe) =>
+    ["순두부", "연두부", "두부"].some((tag) => recipe.HASH_TAG?.includes(tag))
   );
-  
-  const handleLowCalClick=()=>{
-    navigate('/search?calorie=below400')
-  }
 
+  const handleLowCalClick = () => {
+    navigate("/search?calorie=below400");
+  };
 
-  const handleTofuClick=()=>{
-    navigate('/search?q=두부')
-  }
-
+  const handleTofuClick = () => {
+    navigate("/search?q=두부");
+  };
 
   return (
     <div id="container" className="flex flex-col items-center">
       {/* 요리초보 */}
-      <div
-       className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+      <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         <div>
           <p className="text-green-600 font-semibold text-md mb-2">
             요리 초보라면? <br />
             이것부터 보세요!
           </p>
           <h2 className="text-4xl font-extrabold text-gray-900 mb-6 leading-tight">
-
-            요리초보<br />두부 요리 레시피
-
+            요리초보
+            <br />
+            두부 요리 레시피
           </h2>
           <button
-           className="cursor-pointer bg-green-600 text-white px-6 py-3 rounded-full font-medium hover:bg-green-700 transition flex items-center gap-2"
-           onClick={handleTofuClick}
-           >
+            className="cursor-pointer bg-green-600 text-white px-6 py-3 rounded-full font-medium hover:bg-green-700 transition flex items-center gap-2"
+            onClick={handleTofuClick}
+          >
             레시피 더보기 <span className="text-xl">＋</span>
           </button>
         </div>
 
         <div className="flex">
-            <div className="min-w-[280px]">
-              <img
-                src={tofuRecipes[0]?.ATT_FILE_NO_MAIN}
-                alt={tofuRecipes[0]?.RCP_NM}
-                onClick={() => setShowTofuModal(true)}
-                className="cursor-pointer w-full h-64 object-cover mb-4"
-              />
-              <h3
-               onClick={() => setShowTofuModal(true)}
-               className="cursor-pointer text-xl font-bold text-gray-900">
-                냉장고에 남아있는<br />처치 곤란 두부, 어떡하죠?
-              </h3>
-              <p
-               onClick={() => setShowTofuModal(true)}
-               className="cursor-pointer text-sm text-gray-500 mt-2 leading-relaxed">
-                살 때마다 남게 되는 두부 때문에 걱정이시라고요?<br/>
-                냉장고 파먹기 좋은 레시피들로 생활비 아껴보아요.
-              </p>
-              <div className="flex flex-wrap gap-2 mt-4">
-                {['두부', '순두부', '연두부'].map((tag, idx) => (
-                  <span key={idx} className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full">
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-
+          <div className="min-w-[280px]">
+            <img
+              src={tofuRecipes[0]?.ATT_FILE_NO_MAIN}
+              alt={tofuRecipes[0]?.RCP_NM}
+              onClick={() => setShowTofuModal(true)}
+              className="cursor-pointer w-full h-64 object-cover mb-4"
+            />
+            <h3
+              onClick={() => setShowTofuModal(true)}
+              className="cursor-pointer text-xl font-bold text-gray-900"
+            >
+              냉장고에 남아있는
+              <br />
+              처치 곤란 두부, 어떡하죠?
+            </h3>
+            <p
+              onClick={() => setShowTofuModal(true)}
+              className="cursor-pointer text-sm text-gray-500 mt-2 leading-relaxed"
+            >
+              살 때마다 남게 되는 두부 때문에 걱정이시라고요?
+              <br />
+              냉장고 파먹기 좋은 레시피들로 생활비 아껴보아요.
+            </p>
+            <div className="flex flex-wrap gap-2 mt-4">
+              {["두부", "순두부", "연두부"].map((tag, idx) => (
+                <span
+                  key={idx}
+                  className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full"
+                >
+                  #{tag}
+                </span>
+              ))}
             </div>
+          </div>
         </div>
       </div>
 
@@ -185,11 +186,9 @@ const HomePage = ({ deviceType }) => {
 
       {/* 배너 */}
       <div
-
-       className="mt-10 relative w-full h-[400px] overflow-hidden cursor-pointer"
-       onClick={() => handleClick(data[35]?.RCP_NM)}
-       >
-
+        className="mt-10 relative w-full h-[400px] overflow-hidden cursor-pointer"
+        onClick={() => handleClick(data[35]?.RCP_NM)}
+      >
         <img
           src={data[35]?.ATT_FILE_NO_MK}
           alt={data[35]?.RCP_NM}
@@ -266,9 +265,9 @@ const HomePage = ({ deviceType }) => {
       {/* 다이어트 중? 저칼로리 레시피 */}
       <div className=" w-full px-4 py-10 mt-20 bg-[#F1F8E9]">
         <h2
-         className="text-3xl font-bold mb-6 text-gray-800 text-center hover:underline cursor-pointer"
-         onClick={handleLowCalClick}
-         >
+          className="text-3xl font-bold mb-6 text-gray-800 text-center hover:underline cursor-pointer"
+          onClick={handleLowCalClick}
+        >
           다이어트 중? 저칼로리 레시피!
           <a href="#" className="text-3xl text-[#66BB6A]">
             →
@@ -304,7 +303,7 @@ const HomePage = ({ deviceType }) => {
             ))}
         </div>
       </div>
-    
+
       {showTofuModal && (
         <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center px-4">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[80vh] overflow-y-auto p-6 relative">
@@ -314,10 +313,12 @@ const HomePage = ({ deviceType }) => {
             >
               ×
             </button>
-            <h2 className="text-3xl font-bold mb-6 text-center">간편 두부 레시피 모음</h2>
+            <h2 className="text-3xl font-bold mb-6 text-center">
+              간편 두부 레시피 모음
+            </h2>
             <p className="text-center text-md">
-              냉장고 속, 빠질 수 없는 식재료에 두부가 있다면? <br/>
-              맛있게 즐길 수 있는 초간단 레시피 - <br/>
+              냉장고 속, 빠질 수 없는 식재료에 두부가 있다면? <br />
+              맛있게 즐길 수 있는 초간단 레시피 - <br />
             </p>
             <hr className="w-full max-w-7xl border-t border-gray-300 my-10" />
             <ul className="space-y-4">
@@ -336,7 +337,9 @@ const HomePage = ({ deviceType }) => {
                     className="w-24 h-24 object-cover rounded-md flex-shrink-0"
                   />
                   <div className="flex-1">
-                    <h3 className="text-md font-semibold text-gray-900 mb-1">{recipe.RCP_NM}</h3>
+                    <h3 className="text-md font-semibold text-gray-900 mb-1">
+                      {recipe.RCP_NM}
+                    </h3>
                     <div className="text-sm text-gray-500 flex flex-wrap gap-2 items-center">
                       <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
                         {recipe.INFO_ENG} kcal
@@ -346,14 +349,16 @@ const HomePage = ({ deviceType }) => {
                           {recipe.RCP_WAY2}
                         </span>
                       )}
-                      {recipe.HASH_TAG?.split(',').slice(0, 2).map((tag, i) => (
-                        <span
-                          key={i}
-                          className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs"
-                        >
-                          #{tag.trim()}
-                        </span>
-                      ))}
+                      {recipe.HASH_TAG?.split(",")
+                        .slice(0, 2)
+                        .map((tag, i) => (
+                          <span
+                            key={i}
+                            className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs"
+                          >
+                            #{tag.trim()}
+                          </span>
+                        ))}
                     </div>
                   </div>
                 </li>
@@ -362,7 +367,6 @@ const HomePage = ({ deviceType }) => {
           </div>
         </div>
       )}
-
     </div>
   );
 };
