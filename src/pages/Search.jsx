@@ -5,6 +5,7 @@ import { ClipLoader } from "react-spinners";
 import ReactPaginate from "react-paginate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotateLeft } from "@fortawesome/free-solid-svg-icons";
+import LikeButton from "../components/LikeButton";
 
 const filters = {
   cookingMethods: ["굽기", "끓이기", "볶기", "찌기"],
@@ -139,7 +140,6 @@ const Search = () => {
 
         {/* 조리 방법 */}
         <div className="min-w-[250px] grow">
-          
           <div className="flex flex-wrap gap-2 items-center">
             <span className="block w-full mb-1 sm:mb-0 sm:inline sm:w-auto font-semibold text-sm leading-none">조리 방법</span>
             {filters.cookingMethods.map((method, idx) => (
@@ -213,9 +213,11 @@ const Search = () => {
           currentItems?.map((recipe, idx) => (
             <div
               key={idx}
-              className="group p-4 border-2 border-gray-300 rounded-lg hover:border-[#66BB6A] cursor-pointer"
+              className="relative group p-4 border-2 border-gray-300 rounded-lg hover:border-[#66BB6A] cursor-pointer"
               onClick={() => navigate(`/food/${recipe.RCP_NM}`)}
             >
+              {/* 좋아요 하트 버튼 */}
+              <LikeButton title={recipe.RCP_NM} image={recipe.ATT_FILE_NO_MAIN} />
               <img
                 src={recipe.ATT_FILE_NO_MAIN}
                 alt={recipe.RCP_NM}
