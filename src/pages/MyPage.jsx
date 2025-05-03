@@ -37,8 +37,8 @@ const MyPage = () => {
 
       if (newAvatarFile) {
         const ext = newAvatarFile.name.split(".").pop();
-        const timestamp = Date.now(); // 👈 고유값 추가
-        const fileName = `${userId}-${timestamp}.${ext}`; // 👈 파일명 다르게
+        const timestamp = Date.now();
+        const fileName = `${userId}-${timestamp}.${ext}`;
 
         const { error: uploadError } = await supabase.storage
           .from("avatars")
@@ -76,16 +76,16 @@ const MyPage = () => {
   return (
     <main className="max-w-5xl mx-auto px-4 py-8">
       {/* 프로필 영역 */}
-      <section className="flex items-center gap-6 mb-10 bg-[#E8F5E9] p-6 rounded-xl shadow-md">
+      <section className="flex flex-col sm:flex-row items-center gap-6 mb-10 bg-[#E8F5E9] p-6 rounded-xl shadow-md">
         <img
           src={avatarUrl}
           alt="Profile"
           className="w-24 h-24 rounded-full object-cover border-2 border-[#66BB6A] shadow-lg"
         />
-        <div className="flex-1">
+        <div className="flex-1 w-full text-center">
           {isEditing ? (
-            <div className="mt-1 flex flex-col gap-4">
-              <label className="flex flex-col">
+            <div className="mt-1 flex flex-col gap-4 w-full max-w-xs">
+              <label className="flex flex-col w-full">
                 <span className="text-sm font-semibold text-gray-700 mb-1">
                   닉네임 수정
                 </span>
@@ -93,12 +93,12 @@ const MyPage = () => {
                   type="text"
                   value={newNickname}
                   onChange={(e) => setNewNickname(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#66BB6A]"
+                  className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#66BB6A] w-full"
                   placeholder="새 닉네임을 입력하세요"
                 />
               </label>
 
-              <label className="flex flex-col">
+              <label className="flex flex-col w-full">
                 <span className="text-sm font-semibold text-gray-700 mb-1">
                   프로필 이미지 변경
                 </span>
@@ -106,7 +106,8 @@ const MyPage = () => {
                   type="file"
                   accept="image/*"
                   onChange={(e) => setNewAvatarFile(e.target.files[0])}
-                  className="block w-fit text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg
+                  className="block w-full text-sm text-gray-700
+                  file:mr-4 file:py-1 file:px-3 file:rounded-lg
                   file:border-0 file:text-sm file:font-semibold
                   file:bg-[#66BB6A] file:text-white
                   hover:file:bg-[#57A05A] transition"
@@ -121,7 +122,7 @@ const MyPage = () => {
               <div className="flex gap-2">
                 <button
                   onClick={handleProfileUpdate}
-                  className="px-4 py-2 bg-[#66BB6A] text-white rounded-md hover:bg-[#57A05A]"
+                  className="px-3 py-1 text-sm bg-[#66BB6A] text-white rounded-md hover:bg-[#57A05A]"
                 >
                   저장
                 </button>
@@ -131,7 +132,7 @@ const MyPage = () => {
                     setNewAvatarFile(null);
                     setNewNickname(userName);
                   }}
-                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md"
+                  className="px-3 py-1 text-sm bg-gray-300 text-gray-700 rounded-md"
                 >
                   취소
                 </button>
@@ -153,7 +154,7 @@ const MyPage = () => {
         {!isEditing && (
           <button
             onClick={() => setIsEditing(true)}
-            className="ml-auto px-4 py-2 bg-[#66BB6A] text-white rounded-md hover:bg-[#57A05A]"
+            className="sm:ml-auto px-4 py-2 bg-[#66BB6A] text-white rounded-md hover:bg-[#57A05A]"
           >
             수정
           </button>
