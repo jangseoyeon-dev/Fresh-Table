@@ -62,6 +62,7 @@ const Header = () => {
       // console.log("로그아웃 실패", error.message);
     } else {
       clearUser();
+      navigate("/");
       // console.log("로그아웃 성공!");
     }
   };
