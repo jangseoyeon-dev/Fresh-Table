@@ -1,47 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CarouselSlider from "../components/CarouselSlider";
 import useLikedRecipes from "@/stores/useLikedRecipes";
 import useViewedRecipes from "@/stores/useViewedRecipes";
-import { supabase } from "@supabase/auth-ui-shared";
+import useUserStore from "../stores/useUserStore";
 
 const MyPage = () => {
-  const [avatar, setAvatar] = useState("/default-avatar.png"); // 기본 프사
-  const [userName, setUserName] = useState("");
-  const { liked } = useLikedRecipes(); // 전역 liked 상태
+  const { user } = useUserStore();
+  const userId = user?.id;
+  const avatar = user?.user_metadata?.avatar_url || "../../images/chef.png";
+  const userName =
+    user?.user_metadata?.nickname ||
+    user?.user_metadata?.full_name ||
+    user?.user_metadata?.name ||
+    "유저";
+
+  const { liked } = useLikedRecipes();
   const { viewed } = useViewedRecipes();
-  // const [viewedRecipes, setViewedRecipes] = useState([]);
-
-  // useEffect(() => {
-  //   const viewed = localStorage.getItem("viewedRecipes");
-  //   if (viewed) {
-  //     setViewedRecipes(JSON.parse(viewed));
-  //   }
-  // }, []);
-
-  useEffect(() => {
-    const fetchAvatar = async () => {
-      const {
-        data: { user },
-        error,
-      } = await supabase.auth.getUser();
-
-      if (error) {
-        console.error("유저 정보 가져오기 실패:", error.message);
-        return;
-      }
-
-      if (user) {
-        if (user.user_metadata?.avatar_url) {
-          setAvatar(user.user_metadata.avatar_url);
-        }
-        if (user.user_metadata?.full_name || user.user_metadata?.name) {
-          setUserName(user.user_metadata.full_name || user.user_metadata.name);
-        }
-      } // ✅ 여기 중괄호 추가
-    };
-
-    fetchAvatar();
-  }, []);
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-8">
@@ -50,7 +24,7 @@ const MyPage = () => {
         <img
           src={avatar}
           alt="Profile"
-          className="w-24 h-24 rounded-full object-cover border-2 border-[#66BB6A]"
+          className="w-24 h-24 rounded-full object-cover border-2 border-[#66BB6A] shadow-lg"
         />
         <div>
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#333333]">
@@ -75,7 +49,7 @@ const MyPage = () => {
             data={liked.map((r) => ({
               RCP_NM: r.title,
               ATT_FILE_NO_MK: r.image,
-              RCP_PAT2: r.category || "", // 없으면 빈 문자열
+              RCP_PAT2: r.category || "",
             }))}
           />
         ) : (
@@ -93,7 +67,7 @@ const MyPage = () => {
             data={viewed.map((r) => ({
               RCP_NM: r.title,
               ATT_FILE_NO_MK: r.image,
-              RCP_PAT2: "", // 최근 본 레시피는 category 없을 수 있음
+              RCP_PAT2: "",
             }))}
           />
         ) : (
