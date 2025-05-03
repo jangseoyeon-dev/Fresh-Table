@@ -100,37 +100,32 @@ const Search = () => {
       </div> */}
 
       {/* 필터 */}
-      <div className="flex justify-between items-center">
-        <div className="font-bold text-3xl  pb-2">레시피</div>
-        <div className="flex justify-center">
-          <button
-            onClick={handleResetFilters}
-            className="bg-[#66BB6A] font-bold text-white px-4 py-2 rounded-lg hover:bg-[#57A05A] sm:w-auto cursor-pointer"
-          >
-            <FontAwesomeIcon
-              icon={faRotateLeft}
-              style={{ marginRight: "8px" }}
-            />
-            초기화
-          </button>
-        </div>
+       <div className="flex justify-between items-center">
+        <h2 className="font-bold text-3xl  pb-2">레시피</h2>
+        <button
+          onClick={handleResetFilters}
+          className="bg-[#66BB6A] font-bold text-white px-3 py-1 rounded-lg hover:bg-[#57A05A] sm:w-auto cursor-pointer text-sm"
+        >
+          <FontAwesomeIcon
+            icon={faRotateLeft}
+            style={{ marginRight: "6px" }}
+          />
+          필터 초기화
+        </button>
       </div>
-      <div className="w-full xl:flex gap-6 mt-6 xl:justify-between">
+      
+      <div className="w-full flex flex-wrap justify-start gap-x-6 gap-y-6 mt-6">
         {/* 음식 분류 */}
-        <div className=" lg:flex lg:items-center">
-          <span className="font-semibold text-sm block max-sm:mb-2 lg:mr-4">
-            음식 분류
-          </span>
-          <span className="hidden lg:block mr-3 border-r h-[50%]"></span>
-
+        <div className="min-w-[250px] grow">
           <div className="flex flex-wrap gap-2 items-center">
+            <span className="block w-full mb-1 sm:mb-0 sm:inline sm:w-auto font-semibold text-sm leading-none">음식 분류</span>
             {filters.foodTypes.map((type, idx) => (
               <button
                 key={idx}
                 onClick={() =>
                   setSelectedFoodType((prev) => (prev === type ? null : type))
                 }
-                className={`px-4 py-2 text-xs font-bold lg:text-sm rounded-full  cursor-pointer ${
+                className={`px-4 py-2 text-sm rounded-full cursor-pointer ${
                   selectedFoodType === type
                     ? "bg-[#66BB6A] text-white"
                     : "bg-gray-100 hover:bg-gray-200"
@@ -143,13 +138,10 @@ const Search = () => {
         </div>
 
         {/* 조리 방법 */}
-        <div className="max-lg:my-3 lg:flex lg:items-center">
-          <span className="font-semibold text-sm block max-sm:mb-2 lg:mr-4">
-            조리 방법
-          </span>
-          <span className="hidden lg:block mr-3 border-r h-[50%]"></span>
-
+        <div className="min-w-[250px] grow">
+          
           <div className="flex flex-wrap gap-2 items-center">
+            <span className="block w-full mb-1 sm:mb-0 sm:inline sm:w-auto font-semibold text-sm leading-none">조리 방법</span>
             {filters.cookingMethods.map((method, idx) => (
               <button
                 key={idx}
@@ -158,7 +150,7 @@ const Search = () => {
                     prev === method ? null : method
                   )
                 }
-                className={`px-4 py-2 text-xs font-bold lg:text-sm rounded-full cursor-pointer ${
+                className={`px-4 py-2 text-sm rounded-full cursor-pointer ${
                   selectedCookingMethod === method
                     ? "bg-[#66BB6A] text-white"
                     : "bg-gray-100 hover:bg-gray-200"
@@ -171,20 +163,16 @@ const Search = () => {
         </div>
 
         {/* 칼로리 필터 */}
-        <div className="lg:flex lg:items-center">
-          <span className="font-semibold text-sm block max-sm:mb-2 lg:mr-4">
-            칼로리
-          </span>
-          <span className="hidden lg:block mr-3 border-r h-[50%]"></span>
-
+        <div className="min-w-[250px] grow">
           <div className="flex flex-wrap gap-2 items-center">
+          <span className="block w-full mb-1 sm:mb-0 sm:inline sm:w-auto font-semibold text-sm leading-none">칼로리</span>
             {filters.calorie.map(({ label, value }) => (
               <button
                 key={value}
                 onClick={() =>
                   setCalorieFilter((prev) => (prev === value ? null : value))
                 }
-                className={`px-4 py-2 text-xs font-bold lg:text-sm rounded-full cursor-pointer ${
+                className={`px-4 py-2 text-sm rounded-full cursor-pointer ${
                   calorieFilter === value
                     ? "bg-[#66BB6A] text-white"
                     : "bg-gray-100 hover:bg-gray-200"
@@ -237,8 +225,7 @@ const Search = () => {
                 {recipe.RCP_NM}
               </h3>
               <p className="text-sm mt-2 text-gray-500">
-                조리 방법: {recipe.RCP_WAY2} / 분류: {recipe.RCP_PAT2} / 칼로리:{" "}
-                {recipe.INFO_ENG} kcal
+                조리 방법: {recipe.RCP_WAY2} / 분류: {recipe.RCP_PAT2} / 칼로리:{recipe.INFO_ENG} kcal
               </p>
             </div>
           ))}
