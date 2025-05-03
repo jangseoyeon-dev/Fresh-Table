@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { useFilteredRecipes } from "../hooks/useFilteredRecipes";
 import { ClipLoader } from "react-spinners";
-import ReactPaginate from 'react-paginate';
+import ReactPaginate from "react-paginate";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRotateLeft } from "@fortawesome/free-solid-svg-icons";
 
 const filters = {
   cookingMethods: ["굽기", "끓이기", "볶기", "찌기"],
@@ -23,13 +25,14 @@ const Search = () => {
   const [calorieFilter, setCalorieFilter] = useState(null);
   const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 12; 
+  const itemsPerPage = 12;
 
   useEffect(() => {
     const calorie = searchParams.get("calorie");
     const q = searchParams.get("q");
 
     if (q) setQuery(q);
+    else setQuery("");
     if (calorie) setCalorieFilter(calorie);
   }, [searchParams]);
 
@@ -39,6 +42,7 @@ const Search = () => {
     selectedFoodType,
     calorieFilter,
   });
+  console.log(data);
 
   const handleSearch = () => {
     setQuery(search);
@@ -53,7 +57,7 @@ const Search = () => {
     setSearch("");
     setCurrentPage(0);
   };
-  
+
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected);
   };
@@ -63,9 +67,9 @@ const Search = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
-      <h2 className="text-3xl font-bold mb-6 text-center mt-10">레시피</h2>
+      {/* <h2 className="text-3xl font-bold mb-6 text-center mt-10">레시피</h2>
 
-      {/* 검색창 */}
+      검색창
       <div className="flex flex-col items-center space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 w-full sm:w-auto">
           <input
@@ -86,28 +90,47 @@ const Search = () => {
           >
             검색
           </button>
-          <button 
+          <button
             onClick={handleResetFilters}
             className="bg-[#66BB6A] text-white px-4 py-2 rounded-lg hover:bg-[#57A05A] sm:w-auto"
           >
             새로 고침
-            </button>
+          </button>
         </div>
-      </div>
+      </div> */}
 
       {/* 필터 */}
-      <div className="w-full flex flex-col gap-6 mt-6">
+      <div className="flex justify-between items-center">
+        <div className="font-bold text-3xl  pb-2">레시피</div>
+        <div className="flex justify-center">
+          <button
+            onClick={handleResetFilters}
+            className="bg-[#66BB6A] font-bold text-white px-4 py-2 rounded-lg hover:bg-[#57A05A] sm:w-auto cursor-pointer"
+          >
+            <FontAwesomeIcon
+              icon={faRotateLeft}
+              style={{ marginRight: "8px" }}
+            />
+            초기화
+          </button>
+        </div>
+      </div>
+      <div className="w-full lg:flex gap-6 mt-6 lg:justify-between">
         {/* 음식 분류 */}
-        <div>
-          <span className="font-semibold text-sm block mb-2">음식 분류</span>
-          <div className="flex flex-wrap gap-2">
+        <div className=" lg:flex lg:items-center">
+          <span className="font-semibold text-sm block max-sm:mb-2 lg:mr-4">
+            음식 분류
+          </span>
+          <span className="hidden lg:block mr-3 border-r h-[50%]"></span>
+
+          <div className="flex flex-wrap gap-2 items-center">
             {filters.foodTypes.map((type, idx) => (
               <button
                 key={idx}
                 onClick={() =>
                   setSelectedFoodType((prev) => (prev === type ? null : type))
                 }
-                className={`px-4 py-2 text-sm rounded-full cursor-pointer ${
+                className={`px-4 py-2 text-xs font-bold lg:text-sm rounded-full  cursor-pointer ${
                   selectedFoodType === type
                     ? "bg-[#66BB6A] text-white"
                     : "bg-gray-100 hover:bg-gray-200"
@@ -120,9 +143,13 @@ const Search = () => {
         </div>
 
         {/* 조리 방법 */}
-        <div>
-          <span className="font-semibold text-sm block mb-2">조리 방법</span>
-          <div className="flex flex-wrap gap-2">
+        <div className="max-lg:my-3 lg:flex lg:items-center">
+          <span className="font-semibold text-sm block max-sm:mb-2 lg:mr-4">
+            조리 방법
+          </span>
+          <span className="hidden lg:block mr-3 border-r h-[50%]"></span>
+
+          <div className="flex flex-wrap gap-2 items-center">
             {filters.cookingMethods.map((method, idx) => (
               <button
                 key={idx}
@@ -131,7 +158,7 @@ const Search = () => {
                     prev === method ? null : method
                   )
                 }
-                className={`px-4 py-2 text-sm rounded-full cursor-pointer ${
+                className={`px-4 py-2 text-xs font-bold lg:text-sm rounded-full cursor-pointer ${
                   selectedCookingMethod === method
                     ? "bg-[#66BB6A] text-white"
                     : "bg-gray-100 hover:bg-gray-200"
@@ -144,16 +171,20 @@ const Search = () => {
         </div>
 
         {/* 칼로리 필터 */}
-        <div>
-          <span className="font-semibold text-sm block mb-2">칼로리</span>
-          <div className="flex flex-wrap gap-2">
+        <div className="lg:flex lg:items-center">
+          <span className="font-semibold text-sm block max-sm:mb-2 lg:mr-4">
+            칼로리
+          </span>
+          <span className="hidden lg:block mr-3 border-r h-[50%]"></span>
+
+          <div className="flex flex-wrap gap-2 items-center">
             {filters.calorie.map(({ label, value }) => (
               <button
                 key={value}
                 onClick={() =>
                   setCalorieFilter((prev) => (prev === value ? null : value))
                 }
-                className={`px-4 py-2 text-sm rounded-full cursor-pointer ${
+                className={`px-4 py-2 text-xs font-bold lg:text-sm rounded-full cursor-pointer ${
                   calorieFilter === value
                     ? "bg-[#66BB6A] text-white"
                     : "bg-gray-100 hover:bg-gray-200"
@@ -169,7 +200,9 @@ const Search = () => {
       <hr className="w-full max-w-7xl border-t border-gray-300 my-10" />
       {/* 결과 */}
       <div className="w-full flex justify-end">
-        <span className="text-right">총 <span className="font-bold text-[#66BB6A]">{data?.length}</span>개</span>
+        <span className="text-right">
+          총 <span className="font-bold text-[#66BB6A]">{data?.length}</span>개
+        </span>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
         {isLoading && (
@@ -187,7 +220,7 @@ const Search = () => {
             검색 내용에 해당하는 레시피가 없습니다.
           </p>
         )}
-        
+
         {!isLoading &&
           currentItems?.map((recipe, idx) => (
             <div
@@ -204,7 +237,8 @@ const Search = () => {
                 {recipe.RCP_NM}
               </h3>
               <p className="text-sm mt-2 text-gray-500">
-                조리 방법: {recipe.RCP_WAY2} / 분류: {recipe.RCP_PAT2} / 칼로리: {recipe.INFO_ENG} kcal
+                조리 방법: {recipe.RCP_WAY2} / 분류: {recipe.RCP_PAT2} / 칼로리:{" "}
+                {recipe.INFO_ENG} kcal
               </p>
             </div>
           ))}
@@ -216,14 +250,21 @@ const Search = () => {
           nextLabel={">"}
           breakLabel={"..."}
           pageCount={Math.ceil(data.length / itemsPerPage)}
+          breakClassName="cursor-pointer"
           onPageChange={handlePageClick}
           containerClassName={"flex justify-center mt-8 space-x-2"}
-          pageClassName={"px-3 py-1 border border-gray-300 rounded-md text-sm"}
+          pageClassName={
+            "px-3 py-1 border border-gray-300 cursor-pointer rounded-md text-sm"
+          }
           activeClassName={"bg-[#66BB6A] text-white"}
-          previousClassName={"px-3 py-1 border border-gray-300 rounded-md text-sm"}
-          nextClassName={"px-3 py-1 border border-gray-300 rounded-md text-sm"}
+          previousClassName={
+            "px-3 py-1 border border-gray-300 rounded-md text-sm cursor-pointer"
+          }
+          nextClassName={
+            "px-3 py-1 border border-gray-300 rounded-md text-sm cursor-pointer"
+          }
           marginPagesDisplayed={1}
-					pageRangeDisplayed={3}
+          pageRangeDisplayed={3}
         />
       )}
     </div>

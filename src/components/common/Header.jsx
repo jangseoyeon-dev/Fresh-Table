@@ -117,7 +117,7 @@ const Header = () => {
                 className="cursor-pointer transition-all hover:text-green-400"
                 onClick={handleLogout}
               >
-                로그아웃하기
+                로그아웃
               </div>
             ) : (
               <Link to="/login" className="hover:text-green-400 transition-all">
@@ -129,11 +129,11 @@ const Header = () => {
                 to="/mypage"
                 className="hover:text-green-400 transition-all"
               >
-                마이페이지
+                내정보
               </Link>
             )}
             <Link to="/search" className="hover:text-green-400 transition-all">
-              검색페이지
+              레시피
             </Link>
           </div>
         </div>
@@ -141,11 +141,11 @@ const Header = () => {
 
       <div className="hidden sm:flex space-x-3 justify-center items-center font-bold">
         <Link to="/search" className="hover:text-green-400 transition-all">
-          검색페이지
+          레시피
         </Link>
         {user && (
           <Link to="/mypage" className="hover:text-green-400 transition-all">
-            마이페이지
+            내정보
           </Link>
         )}
         {!user && (
@@ -158,7 +158,7 @@ const Header = () => {
             className="cursor-pointer transition-all hover:text-green-400"
             onClick={handleLogout}
           >
-            로그아웃하기
+            로그아웃
           </button>
         ) : (
           <Link to="/login" className="hover:text-green-400 transition-all">
