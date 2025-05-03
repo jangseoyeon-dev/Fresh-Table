@@ -29,6 +29,7 @@ const MyPage = () => {
         console.error("유저 정보 가져오기 실패:", error.message);
         return;
       }
+      console.log(user);
 
       if (user) {
         if (user.user_metadata?.avatar_url) {

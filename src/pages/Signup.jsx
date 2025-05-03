@@ -59,7 +59,7 @@ export default function Signup() {
           data: {
             first_name: null,
             nickname,
-            avatar_url: avatarUrl,
+            avatar_url: avatarUrl || DEFAULT_AVATAR,
           },
         },
       }
