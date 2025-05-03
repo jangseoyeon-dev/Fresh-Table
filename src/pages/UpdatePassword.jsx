@@ -32,10 +32,10 @@ const UpdatePassword = () => {
   };
 
   return (
-    <div className="h-screen font-jua">
+    <div className="h-screen font-jua flex flex-col items-center justify-center">
       <AuthHeader />
 
-      <div className=" flex justify-center items-center  mt-20">
+      <div className=" flex justify-center items-center  my-10">
         <div className="w-100 max-sm:w-80">
           <form
             action=""

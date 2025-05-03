@@ -33,9 +33,9 @@ const Review = ({ itemId }) => {
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.error("리뷰 가져오기 실패:", error.message);
+      // console.error("리뷰 가져오기 실패:", error.message);
     } else {
-      console.log("리뷰 리스트 확인:", data); // <-- 이거 확인!
+      // console.log("리뷰 리스트 확인:", data); // <-- 이거 확인!
       setReviews(data);
     }
   };
@@ -66,9 +66,9 @@ const Review = ({ itemId }) => {
     ]);
 
     if (error) {
-      console.error("리뷰 저장 실패:", error.message);
+      // console.error("리뷰 저장 실패:", error.message);
     } else {
-      console.log("리뷰 저장 성공:", data);
+      // console.log("리뷰 저장 성공:", data);
       setContent("");
       fetchReviews();
       fetchReviewCount(itemId);

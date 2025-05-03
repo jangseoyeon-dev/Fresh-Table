@@ -24,17 +24,17 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="h-screen font-jua ">
+    <div className="h-screen font-jua flex flex-col items-center justify-center ">
       <AuthHeader />
 
-      <div className=" flex justify-center items-center mt-20">
+      <div className=" flex justify-center items-center my-10">
         <div className="w-100 max-sm:w-80">
           <form
             action=""
             className="flex flex-col"
             onSubmit={handleSendresetEmail}
           >
-            <div className=" font-bold text-2xl py-2">비밀번호 초기화하기</div>
+            <div className=" font-bold text-2xl py-2">비밀번호 초기화</div>
             <span className="text-sm text-gray-500">
               이메일을 작성하면 비밀번호 초기화 링크를 보내드립니다
             </span>

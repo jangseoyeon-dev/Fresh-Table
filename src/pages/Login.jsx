@@ -49,12 +49,12 @@ const Login = () => {
     }
   };
   return (
-    <div className="h-screen font-jua ">
+    <div className="h-screen font-jua flex flex-col items-center justify-center ">
       <AuthHeader />
-      <div className="flex justify-center items-center mt-20">
+      <div className="flex justify-center items-center my-10 ">
         <div className="w-100 max-sm:w-80">
           <form action="" onSubmit={handleLogin} className="flex flex-col">
-            <div className=" font-bold text-2xl">로그인하기</div>
+            <div className=" font-bold text-2xl">로그인</div>
             <div className="border-t-1 border-[#BDBDBD] my-4"></div>
             <div className="">이메일</div>
             <input
