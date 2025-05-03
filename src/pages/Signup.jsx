@@ -67,7 +67,7 @@ export default function Signup() {
 
     if (signUpError) {
       console.error("회원가입 실패:", signUpError.message);
-      setMessage("회원가입 실패:", signUpError.message);
+      setMessage(`회원가입 실패: ${signUpError.message}`);
     } else {
       const user = signUpData.user;
 

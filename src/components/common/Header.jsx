@@ -87,7 +87,7 @@ const Header = () => {
           <input
             placeholder="레시피를 검색해보세요"
             type="text"
-            className="w-full sm:w-lg border-1 px-9 p-2 rounded-3xl border-gray-200 outline-none focus:border-gray-400 transition-all"
+            className="w-full sm:w-[40vw] border-1  px-9 p-2 rounded-3xl border-gray-200 outline-none focus:border-gray-400 transition-all"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
