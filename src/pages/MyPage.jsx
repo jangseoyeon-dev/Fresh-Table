@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import CarouselSlider from "../components/CarouselSlider";
 import useLikedRecipes from "@/stores/useLikedRecipes";
 import useViewedRecipes from "@/stores/useViewedRecipes";
-import { supabase } from "@supabase/auth-ui-shared";
+import { supabase } from "../lib/supabaseClient";
 
 const MyPage = () => {
   const [avatar, setAvatar] = useState("/default-avatar.png"); // 기본 프사
