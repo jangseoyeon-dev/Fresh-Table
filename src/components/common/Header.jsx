@@ -42,6 +42,7 @@ const Header = () => {
     });
   }, []);
   useEffect(() => {
+    setSearch("");
     setIsOpen(false);
   }, [location]);
 

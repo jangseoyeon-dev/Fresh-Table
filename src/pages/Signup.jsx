@@ -51,11 +51,11 @@ export default function Signup() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-
+    const trimmedEmail = email.trim();
     const avatarUrl = await handleUpload();
     const { data: signUpData, error: signUpError } = await supabase.auth.signUp(
       {
-        email: email,
+        email: trimmedEmail,
         password: password,
         options: {
           data: {
