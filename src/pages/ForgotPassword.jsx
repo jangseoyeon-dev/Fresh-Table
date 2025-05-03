@@ -6,15 +6,12 @@ import AuthHeader from "../components/common/AuthHeader";
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-
+  const redirectUrl = import.meta.env.VITE_SUPABASE_REDIRECT_URL;
   const handleSendresetEmail = async (e) => {
     e.preventDefault();
-    /**
-     * Step 1: Send the user an email to get a password reset token.
-     * This email contains a link which sends the user back to your application.
-     */
+
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "http://localhost:5173/update-password",
+      redirectTo: redirectUrl,
     });
     if (error) {
       console.log(error.message);
@@ -24,7 +21,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="h-screen font-jua flex flex-col items-center justify-center ">
+    <div className="h-screen flex flex-col items-center justify-center ">
       <AuthHeader />
 
       <div className=" flex justify-center items-center my-10">
