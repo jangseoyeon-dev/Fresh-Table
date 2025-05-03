@@ -50,6 +50,11 @@ const MyPage = () => {
           .getPublicUrl(fileName);
         newAvatarUrl = urlData.publicUrl;
       }
+      //db업데이트
+      const { data, error } = await supabase
+        .from("profiles")
+        .update({ avatar_url: newAvatarUrl })
+        .eq("id", userId); // 이제 정확한 id 사용
 
       const { error: updateError } = await supabase.auth.updateUser(
         {
