@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient"; // supabase 클라이언트 임포트
 import { Link, Navigate, useNavigate } from "react-router";
 import AuthHeader from "@/components/common/AuthHeader";
+import useUserStore from "../stores/useUserStore";
 
 export default function Signup() {
   const DEFAULT_AVATAR =
@@ -11,6 +12,7 @@ export default function Signup() {
   const [nickname, setNickname] = useState("");
   const [message, setMessage] = useState("");
   const [avatarFile, setAvatarFile] = useState("");
+  const { user } = useUserStore();
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -25,7 +27,7 @@ export default function Signup() {
       }
     };
     checkSession();
-  }, []);
+  }, [user]);
   const handleUpload = async () => {
     if (!avatarFile) return;
 
@@ -91,9 +93,9 @@ export default function Signup() {
   };
 
   return (
-    <div className="h-screen font-jua">
+    <div className=" font-jua flex flex-col items-center justify-center">
       <AuthHeader />
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center my-10">
         <div className="w-100 max-sm:w-80">
           <form action="" className="flex flex-col" onSubmit={handleSignup}>
             <div className="font-bold text-2xl">회원가입하기</div>
