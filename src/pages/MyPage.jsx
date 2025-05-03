@@ -12,7 +12,7 @@ const MyPage = () => {
     user?.user_metadata?.nickname ||
     user?.user_metadata?.full_name ||
     user?.user_metadata?.name ||
-    "유저";
+    "";
 
   const { liked } = useLikedRecipes();
   const { viewed } = useViewedRecipes();
@@ -20,14 +20,14 @@ const MyPage = () => {
   return (
     <main className="max-w-5xl mx-auto px-4 py-8">
       {/* 프로필 영역 */}
-      <section className="flex items-center gap-6 mb-10 bg-[#E8F5E9] p-8">
+      <section className="flex items-center gap-6 mb-10 bg-[#E8F5E9] p-6 rounded-xl shadow-md">
         <img
           src={avatar}
           alt="Profile"
           className="w-24 h-24 rounded-full object-cover border-2 border-[#66BB6A] shadow-lg"
         />
         <div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#333333]">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#333333] mb-1">
             안녕하세요, {userName}님👋
           </h2>
           <p className="text-xs sm:text-sm md:text-base text-gray-500">
