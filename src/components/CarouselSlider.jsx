@@ -11,7 +11,7 @@ const responsive = {
   mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
 };
 
-const CarouselSlider = ({ data = [], deviceType }) => {
+const CarouselSlider = ({ data = [], deviceType, isViewed = false }) => {
   const navigate = useNavigate();
 
   return (
@@ -31,6 +31,7 @@ const CarouselSlider = ({ data = [], deviceType }) => {
     >
       {data.map((recipe, index) => (
         <RecipeCard
+          isViewed={isViewed}
           key={index}
           title={recipe.RCP_NM}
           image={recipe.ATT_FILE_NO_MK}
