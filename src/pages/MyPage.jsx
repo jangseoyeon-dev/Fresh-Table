@@ -13,6 +13,10 @@ const MyPage = () => {
     user?.user_metadata?.full_name ||
     user?.user_metadata?.name ||
     "";
+  const email = user?.email || "";
+  const joinedAt = user?.created_at
+    ? new Date(user.created_at).toLocaleDateString()
+    : "";
 
   const { liked } = useLikedRecipes();
   const { viewed } = useViewedRecipes();
@@ -27,16 +31,14 @@ const MyPage = () => {
           className="w-24 h-24 rounded-full object-cover border-2 border-[#66BB6A] shadow-lg"
         />
         <div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#333333] mb-1">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#333333] mb-2">
             안녕하세요, {userName}님👋
           </h2>
           <p className="text-xs sm:text-sm md:text-base text-gray-500">
             마이 레시피 공간에 오신 것을 환영합니다.
           </p>
+          <p className="text-sm text-gray-400 mt-1">가입일: {joinedAt}</p>
         </div>
-        <button className="ml-auto px-4 py-2 bg-[#66BB6A] text-white rounded-md hover:bg-[#57A05A] transition">
-          프로필 수정
-        </button>
       </section>
 
       {/* ❤️ 좋아요한 레시피 */}
