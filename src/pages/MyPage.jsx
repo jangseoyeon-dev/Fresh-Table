@@ -7,7 +7,7 @@ import useUserStore from "../stores/useUserStore";
 const MyPage = () => {
   const { user } = useUserStore();
   const userId = user?.id;
-  const avatar = user?.user_metadata?.avatar_url || "../../images/chef.png";
+  const avatar = user?.user_metadata?.avatar_url || "/images/chef.png"; // ✅ 경로만 정확하게
   const userName =
     user?.user_metadata?.nickname ||
     user?.user_metadata?.full_name ||
