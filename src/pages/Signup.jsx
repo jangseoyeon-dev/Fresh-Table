@@ -68,7 +68,7 @@ export default function Signup() {
 
     if (signUpError) {
       console.error("회원가입 실패:", signUpError.message);
-      setMessage(`회원가입 실패: ${signUpError.message}`);
+      alert(`회원가입 실패: ${signUpError.message}`);
     } else {
       const user = signUpData.user;
 
@@ -86,7 +86,7 @@ export default function Signup() {
         console.error("프로필 저장 실패:", profileError.message);
       } else {
         console.log("프로필 저장 성공:", profileData);
-        setMessage("회원가입 성공! 이메일을 확인하세요.");
+        alert("회원가입 성공! 이메일을 확인하세요.");
       }
     }
   };
