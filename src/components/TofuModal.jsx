@@ -2,7 +2,7 @@ import React from "react";
 
 const TofuModal = ({ recipes, onClose, onSelectRecipe }) => {
   return (
-    <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center px-4">
+    <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center px-4 pt-10">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-xl max-h-[80vh] overflow-y-auto p-6 relative">
         <button
           className="cursor-pointer absolute top-3 right-4 text-gray-500 hover:text-black text-3xl"
