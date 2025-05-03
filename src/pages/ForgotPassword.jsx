@@ -34,7 +34,7 @@ const ForgotPassword = () => {
             className="flex flex-col"
             onSubmit={handleSendresetEmail}
           >
-            <div className=" font-bold text-2xl py-2">비밀번호 초기화하기</div>
+            <div className=" font-bold text-2xl py-2">비밀번호 초기화</div>
             <span className="text-sm text-gray-500">
               이메일을 작성하면 비밀번호 초기화 링크를 보내드립니다
             </span>

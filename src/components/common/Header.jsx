@@ -73,9 +73,9 @@ const Header = () => {
           <img
             src="/images/fresh_table_logo-removebg-preview.png"
             alt=""
-            className="w-10 "
+            className="w-12 "
           />
-          <span className="hidden sm:block text-xl font-bold">Fresh Table</span>
+          {/* <span className="hidden sm:block text-xl font-bold">Fresh Table</span> */}
         </Link>
       </div>
       <div className="relative max-sm:flex-3">
@@ -108,7 +108,7 @@ const Header = () => {
                 to="/signup"
                 className="hover:text-green-400 transition-all"
               >
-                가입하기
+                회원가입
               </Link>
             )}
 
@@ -132,17 +132,11 @@ const Header = () => {
                 내정보
               </Link>
             )}
-            <Link to="/search" className="hover:text-green-400 transition-all">
-              레시피
-            </Link>
           </div>
         </div>
       )}
 
       <div className="hidden sm:flex space-x-3 justify-center lg:mx-9 items-center font-bold">
-        <Link to="/search" className="hover:text-green-400 transition-all">
-          레시피
-        </Link>
         {user && (
           <Link to="/mypage" className="hover:text-green-400 transition-all">
             내정보
@@ -150,7 +144,7 @@ const Header = () => {
         )}
         {!user && (
           <Link to="/signup" className="hover:text-green-400 transition-all">
-            가입하기
+            회원가입
           </Link>
         )}
         {user ? (

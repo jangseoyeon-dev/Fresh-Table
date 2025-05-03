@@ -115,7 +115,7 @@ const Search = () => {
           </button>
         </div>
       </div>
-      <div className="w-full lg:flex gap-6 mt-6 lg:justify-between">
+      <div className="w-full xl:flex gap-6 mt-6 xl:justify-between">
         {/* 음식 분류 */}
         <div className=" lg:flex lg:items-center">
           <span className="font-semibold text-sm block max-sm:mb-2 lg:mr-4">

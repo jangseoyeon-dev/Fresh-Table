@@ -98,7 +98,7 @@ export default function Signup() {
       <div className="flex justify-center items-center my-10">
         <div className="w-100 max-sm:w-80">
           <form action="" className="flex flex-col" onSubmit={handleSignup}>
-            <div className="font-bold text-2xl">회원가입하기</div>
+            <div className="font-bold text-2xl">회원가입</div>
             <div className="border-t-1 border-[#BDBDBD] my-4"></div>
             <div className="">이메일</div>
             <input
