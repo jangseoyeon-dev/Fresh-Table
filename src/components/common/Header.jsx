@@ -98,21 +98,12 @@ const Header = () => {
         <FontAwesomeIcon icon={faBars} onClick={handleDropdown} />
       </div>
       {isOpen && (
-        <div className="bg-white inset-0 z-[1000] fixed p-6 font-bold text-xl space-y-2">
+        <div className="bg-white inset-0 z-[1000] fixed p-6  text-xl space-y-2">
           <div className="text-right text-2xl">
             <FontAwesomeIcon icon={faXmark} onClick={handleClose} />
           </div>
 
           <div className="flex flex-col gap-2">
-            {!user && (
-              <Link
-                to="/signup"
-                className="hover:text-green-400 transition-all"
-              >
-                회원가입
-              </Link>
-            )}
-
             {user ? (
               <div
                 className="cursor-pointer transition-all hover:text-green-400"
@@ -123,6 +114,14 @@ const Header = () => {
             ) : (
               <Link to="/login" className="hover:text-green-400 transition-all">
                 로그인
+              </Link>
+            )}
+            {!user && (
+              <Link
+                to="/signup"
+                className="hover:text-green-400 transition-all"
+              >
+                회원가입
               </Link>
             )}
             {user && (
@@ -137,15 +136,10 @@ const Header = () => {
         </div>
       )}
 
-      <div className="hidden sm:flex space-x-3 justify-center lg:mx-9 items-center font-bold">
+      <div className="hidden sm:flex space-x-3 justify-center lg:mx-9 items-center ">
         {user && (
           <Link to="/mypage" className="hover:text-green-400 transition-all">
             내정보
-          </Link>
-        )}
-        {!user && (
-          <Link to="/signup" className="hover:text-green-400 transition-all">
-            회원가입
           </Link>
         )}
         {user ? (
@@ -158,6 +152,11 @@ const Header = () => {
         ) : (
           <Link to="/login" className="hover:text-green-400 transition-all">
             로그인
+          </Link>
+        )}{" "}
+        {!user && (
+          <Link to="/signup" className="hover:text-green-400 transition-all">
+            회원가입
           </Link>
         )}
       </div>
