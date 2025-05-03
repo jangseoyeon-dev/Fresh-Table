@@ -50,11 +50,11 @@ export default function Signup() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    const trimmedEmail = email.trim();
+
     const avatarUrl = await handleUpload();
     const { data: signUpData, error: signUpError } = await supabase.auth.signUp(
       {
-        email: trimmedEmail,
+        email: email,
         password: password,
         options: {
           data: {
@@ -65,7 +65,17 @@ export default function Signup() {
         },
       }
     );
+    const { data: existingProfiles, error } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("email", email);
 
+    console.log(existingProfiles);
+
+    if (existingProfiles?.length > 0) {
+      alert("이미 가입된 이메일입니다.");
+      return;
+    }
     if (signUpError) {
       console.error("회원가입 실패:", signUpError.message);
       alert(`회원가입 실패: ${signUpError.message}`);
@@ -77,6 +87,7 @@ export default function Signup() {
         .insert([
           {
             id: user.id, // 반드시 auth user id와 같아야 함
+            email: email,
             nickname: nickname,
             avatar_url: avatarUrl || DEFAULT_AVATAR,
           },
@@ -92,7 +103,7 @@ export default function Signup() {
   };
 
   return (
-    <div className=" font-jua flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center">
       <AuthHeader />
       <div className="flex justify-center items-center my-10">
         <div className="w-100 max-sm:w-80">

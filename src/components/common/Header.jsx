@@ -69,7 +69,7 @@ const Header = () => {
   };
 
   return (
-    <div className="flex sticky w-full bg-white top-0 z-[2000] sm:justify-center justify-between items-center sm:space-x-4 font-comic shadow-[0_4px_8px_-1px_rgba(0,0,0,0.1)]">
+    <div className="flex sticky w-full bg-white top-0 z-[2000] sm:justify-center justify-between items-center sm:space-x-4 shadow-[0_4px_8px_-1px_rgba(0,0,0,0.1)]">
       <div className=" sm:px-6 py-4 max-sm:flex-1 flex justify-center items-center">
         <Link to="/" className="cursor-pointer flex w-fit items-center">
           <img
