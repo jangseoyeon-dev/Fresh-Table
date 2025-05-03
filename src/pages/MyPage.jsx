@@ -50,11 +50,11 @@ const MyPage = () => {
           .getPublicUrl(fileName);
         newAvatarUrl = urlData.publicUrl;
       }
-      //db업데이트
-      const { data, error } = await supabase
+
+      await supabase
         .from("profiles")
         .update({ avatar_url: newAvatarUrl })
-        .eq("id", userId); // 이제 정확한 id 사용
+        .eq("id", userId);
 
       const { error: updateError } = await supabase.auth.updateUser(
         {
@@ -81,15 +81,15 @@ const MyPage = () => {
   return (
     <main className="max-w-5xl mx-auto px-4 py-8">
       {/* 프로필 영역 */}
-      <section className="flex flex-col sm:flex-row items-center gap-6 mb-10 bg-[#E8F5E9] p-6 rounded-xl shadow-md">
+      <section className="flex flex-col sm:flex-row sm:items-center sm:justify-start gap-6 mb-10 bg-[#E8F5E9] p-6 rounded-xl shadow-md">
         <img
           src={avatarUrl}
           alt="Profile"
-          className="w-24 h-24 rounded-full object-cover border-2 border-[#66BB6A] shadow-lg"
+          className="w-24 h-24 rounded-full object-cover border-2 border-[#66BB6A] shadow-lg mx-auto sm:mx-0"
         />
-        <div className="flex-1 w-full text-center">
+        <div className="flex-1 w-full text-center sm:text-left">
           {isEditing ? (
-            <div className="mt-1 flex flex-col gap-4 w-full max-w-xs">
+            <div className="mt-1 flex flex-col gap-4 w-full max-w-xs mx-auto sm:mx-0">
               <label className="flex flex-col w-full">
                 <span className="text-sm font-semibold text-gray-700 mb-1">
                   닉네임 수정
@@ -124,7 +124,7 @@ const MyPage = () => {
                 )}
               </label>
 
-              <div className="flex gap-2">
+              <div className="flex gap-2 justify-center sm:justify-start">
                 <button
                   onClick={handleProfileUpdate}
                   className="px-3 py-1 text-sm bg-[#66BB6A] text-white rounded-md hover:bg-[#57A05A]"
@@ -159,7 +159,7 @@ const MyPage = () => {
         {!isEditing && (
           <button
             onClick={() => setIsEditing(true)}
-            className="sm:ml-auto px-4 py-2 bg-[#66BB6A] text-white rounded-md hover:bg-[#57A05A]"
+            className="mt-4 sm:mt-0 sm:ml-auto px-4 py-2 bg-[#66BB6A] text-white rounded-md hover:bg-[#57A05A]"
           >
             수정
           </button>
@@ -191,6 +191,7 @@ const MyPage = () => {
         </h3>
         {viewed.length > 0 ? (
           <CarouselSlider
+            isViewed={true}
             data={viewed.map((r) => ({
               RCP_NM: r.title,
               ATT_FILE_NO_MK: r.image,
