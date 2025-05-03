@@ -10,6 +10,7 @@ import MyPage from "@/pages/MyPage";
 import Signup from "@/pages/Signup";
 import ForgotPassword from "@/pages/ForgotPassword";
 import UpdatePassword from "@/pages/UpdatePassword";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   { path: "*", Component: NotFoundPage },
@@ -20,7 +21,14 @@ const router = createBrowserRouter([
       { index: true, Component: HomePage },
       { path: "search", Component: SearchPage },
       { path: "food/:foodNm", Component: DetailPage },
-      { path: "mypage", Component: MyPage },
+      {
+        path: "mypage",
+        element: (
+          <PrivateRoute>
+            <MyPage />
+          </PrivateRoute>
+        ),
+      },
     ],
   },
   { path: "login", Component: Login },
